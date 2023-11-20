@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\Lenovo\\.ohos\\config\\auto_debug_MISE_Project_com.example.myapplication_2850086000491483780.cer",
+          "storePassword": "00000019B54A7ADA46A0FF24641022771A36136663636909BDF9CA82A649F5D522BAD881A48241B3B4",
+          "keyAlias": "debugKey",
+          "keyPassword": "00000019194FEDB5A30AB771450C92B9AAE7BC1F2528EA811C894EEF01FACFAF6937096E7A10762BF2",
+          "profile": "C:\\Users\\Lenovo\\.ohos\\config\\auto_debug_MISE_Project_com.example.myapplication_2850086000491483780.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\Lenovo\\.ohos\\config\\auto_debug_MISE_Project_com.example.myapplication_2850086000491483780.p12"
+        }
+      }
+    ],
     "compileSdkVersion": 9,
     "compatibleSdkVersion": 9,
     "products": [
