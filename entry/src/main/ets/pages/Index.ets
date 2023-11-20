@@ -1,3 +1,7 @@
+import { CommunityScreen } from './Community/CommunityScreen';
+import { DrawingPanelScreen } from './DrawingPanel/DrawingPanelScreen';
+import { ProfileScreen } from './Profile/ProfileScreen';
+
 @Entry
 @Component
 struct Index {
@@ -17,19 +21,19 @@ struct Index {
   }
 
   build() {
-    Tabs({barPosition: BarPosition.End}) {
+    Tabs({ barPosition: BarPosition.End }) {
       TabContent() {
-        Text('首页的内容').fontSize(30)
+        CommunityScreen()
       }
-      .tabBar(this.TabBuilder("首页", 0, $r('app.media.ic_public_home'), $r('app.media.ic_public_home')))
+      .tabBar(this.TabBuilder("社区", 0, $r('app.media.ic_public_home'), $r('app.media.ic_public_home')))
 
       TabContent() {
-        Text('画板').fontSize(30)
+        DrawingPanelScreen()
       }
       .tabBar(this.TabBuilder("画板", 2, $r('app.media.ic_screenshot_penshape'), $r('app.media.ic_screenshot_penshape')))
 
       TabContent() {
-        Text('我的').fontSize(30)
+        ProfileScreen()
       }
       .tabBar(this.TabBuilder("我的", 1, $r('app.media.ic_public_contacts'), $r('app.media.ic_public_contacts')))
 
