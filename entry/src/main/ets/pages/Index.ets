@@ -30,17 +30,21 @@ struct Index {
       TabContent() {
         DrawingPanelScreen()
       }
-      .tabBar(this.TabBuilder("画板", 2, $r('app.media.ic_screenshot_penshape'), $r('app.media.ic_screenshot_penshape')))
+      .tabBar(this.TabBuilder("画板", 1, $r('app.media.ic_screenshot_penshape'), $r('app.media.ic_screenshot_penshape')))
 
       TabContent() {
         ProfileScreen()
       }
-      .tabBar(this.TabBuilder("我的", 1, $r('app.media.ic_public_contacts'), $r('app.media.ic_public_contacts')))
+      .tabBar(this.TabBuilder("我的", 2, $r('app.media.ic_public_contacts'), $r('app.media.ic_public_contacts')))
 
     }
     .width('100%')
     .height('100%')
     .backgroundColor('#F5F5F5')
+    .onChange((index) =>
+    {
+      this.currentIndex = index
+    })
   }
 }
 
