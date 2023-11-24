@@ -42,6 +42,7 @@ struct Index {
     .width('100%')
     .height('100%')
     .backgroundColor($r('app.color.snow_grey'))
+    .scrollable(false)
     .onChange((index) =>
     {
       this.currentIndex = index
