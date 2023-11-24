@@ -15,7 +15,10 @@ struct PostCard {
         Column() {
           Text(this.content.title)
             .fontSize(30)
+            .fontWeight(FontWeight.Medium)
           Text(this.content.description)
+            .fontSize(12)
+            .fontWeight(FontWeight.Regular)
         }
         .padding(20)
         .margin(2)
@@ -24,7 +27,8 @@ struct PostCard {
       .padding(2)
 
       Text(this.content.context)
-        .padding(10)
+        .fontSize(16)
+        .fontWeight(FontWeight.Regular)
 
       Grid() {
         ForEach(this.content.images, (item: Resource) => {
@@ -67,7 +71,7 @@ struct CardPre {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F1F3F5')
+    .backgroundColor($r('app.color.snow_grey'))
   }
 }
 
