@@ -1,0 +1,116 @@
+{
+  "integer": [
+    {
+      "name": "common_ultra_small",
+      "value": 4
+    },
+    {
+      "name": "common_small",
+      "value": 8
+    },
+    {
+      "name": "common_medium",
+      "value": 12
+    },
+    {
+      "name": "common_large",
+      "value": 16
+    },
+    {
+      "name": "common_ultra_large",
+      "value": 24
+    },
+    {
+      "name": "progress_bar",
+      "value": 2
+    },
+    {
+      "name": "subtab",
+      "value": 4
+    },
+    {
+      "name": "tap_effect",
+      "value": 8
+    },
+    {
+      "name": "radio_button",
+      "value": 4
+    },
+    {
+      "name": "grid",
+      "value": 12
+    },
+    {
+      "name": "menu",
+      "value": 20
+    },
+    {
+      "name": "banner",
+      "value": 12
+    },
+    {
+      "name": "icon",
+      "value": 8
+    },
+    {
+      "name": "switch",
+      "value": 10
+    },
+    {
+      "name": "piece",
+      "value": 14
+    },
+    {
+      "name": "badge",
+      "value": 14
+    },
+    {
+      "name": "states_button",
+      "value": 14
+    },
+    {
+      "name": "card",
+      "value": 14
+    },
+    {
+      "name": "dialog",
+      "value": 16
+    },
+    {
+      "name": "share",
+      "value": 16
+    },
+    {
+      "name": "open_via",
+      "value": 16
+    },
+    {
+      "name": "text_field",
+      "value": 20
+    },
+    {
+      "name": "search_bar",
+      "value": 18
+    },
+    {
+      "name": "notification",
+      "value": 18
+    },
+    {
+      "name": "instant_tip",
+      "value": 18
+    },
+    {
+      "name": "button_large_rounded",
+      "value": 20
+    },
+    {
+      "name": "button_small_rounded",
+      "value": 16
+    },
+    {
+      "name": "panels",
+      "value": 32
+    }
+  ]
+}
