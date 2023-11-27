@@ -46,7 +46,7 @@
     },
     {
       "name": "forgot_margin_top",
-      "value": "20vp"
+      "value": "15vp"
     },
     {
       "name": "input_margin_top",
@@ -62,7 +62,7 @@
     },
     {
       "name": "login_button_margin_top",
-      "value": "87vp"
+      "value": "30vp"
     },
     {
       "name": "login_button_margin_bottom",

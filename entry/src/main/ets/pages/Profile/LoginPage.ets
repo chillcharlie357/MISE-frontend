@@ -99,7 +99,11 @@ struct Index {
               message: '你点击了登记账户界面'
             })
           })
+
+
         Text($r('app.string.forgot_password')).blueTextStyle()
+
+
       }
       .justifyContent(FlexAlign.SpaceBetween)
       .width(CommonConstants.FULL_PARENT)
