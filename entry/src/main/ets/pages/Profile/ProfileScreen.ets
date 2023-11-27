@@ -9,7 +9,8 @@ struct ProfileScreen {
   private listItem:string[] = ["个人信息","历史记录","收藏夹"]
 
   @State Username: string = "USER"
-  @State UserPersonalSign: string = "Hello, world!"
+  @State UserPersonalSign: string = "介绍一下你自己吧"
+  @State PictureAbstrate: string[] =["作品1:xxxxxxxx","作品2:xxxxxxxx","作品3:xxxxxxxx"]
 
   build() {
     Column() {
@@ -79,14 +80,14 @@ struct ProfileScreen {
                   ListItem() {
                     Text(func)
                       .fontSize(20)
-                      .margin({left:20})
+                      .margin({ left: 20 })
                       .width("90%")
                       .onClick(() => {
                         promptAction.showToast({
                           message: "你点击了" + func + "按钮",
                           duration: 3000
+                        })
                       })
-                    })
 
                   }.margin({ top: 20, bottom: 20 })
 
@@ -94,11 +95,56 @@ struct ProfileScreen {
               )
             }
             .divider({ strokeWidth: 2, color: Color.Black })
+            // .height(100)
+
+            Column({ space: 20 }) {
+              Row() {
+                Image($r("app.media.profile_default_user"))
+                  .width(90)
+                  .height(90)
+                  .borderStyle(BorderStyle.Dotted)
+                  .borderWidth(1)
+                  .borderColor(Color.Blue)
+                Text(this.PictureAbstrate[0])
+                  .fontSize(20)
+              }
+
+              Row() {
+                Image($r("app.media.profile_default_user"))
+                  .width(90)
+                  .height(90)
+                  .borderStyle(BorderStyle.Dotted)
+                  .borderWidth(1)
+                  .borderColor(Color.Blue)
+                Text(this.PictureAbstrate[1])
+                  .fontSize(20)
+              }
+
+              Row() {
+                Image($r("app.media.profile_default_user"))
+                  .width(90)
+                  .height(90)
+                  .borderStyle(BorderStyle.Dotted)
+                  .borderWidth(1)
+                  .borderColor(Color.Blue)
+                Text(this.PictureAbstrate[2])
+                  .fontSize(20)
+              }
+
+              Row() {
+                Image($r("app.media.profile_default_user"))
+                  .width(90)
+                  .height(90)
+                  .borderStyle(BorderStyle.Dotted)
+                  .borderWidth(1)
+                  .borderColor(Color.Blue)
+                Text(this.PictureAbstrate[2])
+                  .fontSize(20)
+              }
+            }
+
           }
         }
-        // .height(100)
-
-
 
 
 
