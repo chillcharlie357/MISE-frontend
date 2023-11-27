@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/Community/CommunityScreen",
     "pages/DrawingPanel/DrawingPanelScreen",
-    "pages/Profile/ProfileScreen"
+    "pages/Profile/ProfileScreen",
+    "pages/Profile/LoginPage"
   ]
 }

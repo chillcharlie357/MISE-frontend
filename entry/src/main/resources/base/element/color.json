@@ -7,6 +7,35 @@
     {
       "name": "snow_grey",
       "value": "#F1F3F5"
+    },
+    {
+      "name": "loginPage_placeholder_color",
+      "value": "#99182431"
+    },
+    {
+      "name": "loginPage_background",
+      "value": "#F1F3F5"
+    },
+    {
+      "name": "loginPage_line_color",
+      "value": "#33182431"
+    },
+    {
+      "name": "loginPage_blue_text_color",
+      "value": "#007DFF"
+    },
+    {
+      "name": "loginPage_title_text_color",
+      "value": "#182431"
+    },
+    {
+      "name": "loginPage_login_more_text_color",
+      "value": "#99182431"
+    },
+    {
+      "name": "loginPage_login_button_color",
+      "value": "#007DFF"
     }
+
   ]
 }

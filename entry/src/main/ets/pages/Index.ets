@@ -24,7 +24,7 @@ struct Index {
   build() {
     Tabs({ barPosition: BarPosition.End }) {
       TabContent() {
-        CommunityScreen()
+         CommunityScreen()
       }
       .tabBar(this.TabBuilder("社区", 0, $r('app.media.ic_public_home'), $r('app.media.ic_public_home')))
 

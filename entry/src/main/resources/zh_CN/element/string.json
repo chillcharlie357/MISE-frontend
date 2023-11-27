@@ -11,6 +11,43 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "login_page",
+      "value": "登录界面"
+    },
+    {
+      "name": "login_more",
+      "value": "登录以查看更多信息"
+    },
+    {
+      "name": "account",
+      "value": "用户"
+    },
+    {
+      "name": "password",
+      "value": "密码"
+    },
+    {
+      "name": "login",
+      "value": "登录"
+    },
+    {
+      "name": "register_account",
+      "value": "没有账号？点我注册"
+    },
+    {
+      "name": "forgot_password",
+      "value": "忘了密码？点我找回"
+    },
+    {
+      "name": "message_login",
+      "value": "短信验证码登录"
+    },
+    {
+      "name": "input_empty_tips",
+      "value": "输入不能为空"
     }
+
   ]
 }

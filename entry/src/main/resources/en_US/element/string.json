@@ -11,6 +11,43 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+
+    {
+      "name": "login_page",
+      "value": "Login page"
+    },
+    {
+      "name": "login_more",
+      "value":"Log in to your account to use more services"
+    },
+    {
+      "name": "account",
+      "value": "Account"
+    },
+    {
+      "name": "password",
+      "value": "Password"
+    },
+    {
+      "name": "login",
+      "value": "Log in"
+    },
+    {
+      "name": "register_account",
+      "value": "Registering an Account"
+    },
+    {
+      "name": "forgot_password",
+      "value": "Forgot Password"
+    },
+    {
+      "name": "message_login",
+      "value": "SMS verification code login"
+    },
+    {
+      "name": "input_empty_tips",
+      "value": "The input cannot be empty."
     }
   ]
 }

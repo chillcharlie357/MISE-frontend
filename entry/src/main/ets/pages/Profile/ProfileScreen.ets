@@ -1,5 +1,5 @@
 import promptAction from '@ohos.promptAction'
-
+import router from '@ohos.router';
 @Entry
 @Component
 struct ProfileScreen {
@@ -11,6 +11,8 @@ struct ProfileScreen {
   @State Username: string = "USER"
   @State UserPersonalSign: string = "介绍一下你自己吧"
   @State PictureAbstrate: string[] =["作品1:xxxxxxxx","作品2:xxxxxxxx","作品3:xxxxxxxx"]
+  @State login_state:boolean = false
+  @State login_out_show: string = "点我登录"
 
   build() {
     Column() {
@@ -19,11 +21,13 @@ struct ProfileScreen {
 
         }
         .width("85%")
+
         Button()
         {
           Image($r("app.media.ic_settings"))
             .height(40)
             .width(40)
+            .backgroundColor(Color.White)
         }
         .onClick(() =>
         {
@@ -32,7 +36,7 @@ struct ProfileScreen {
             duration:3000
           })
         })
-        .backgroundColor(Color.White)
+        // .backgroundColor(Color.White)
 
 
       }
@@ -56,21 +60,49 @@ struct ProfileScreen {
 
 
         Row({space:20}){
-          Image($r("app.media.profile_default_user"))
-            .width(90)
-            .height(90)
-            .borderStyle(BorderStyle.Dotted)
-            .borderWidth(1)
-            .borderColor(Color.Blue)
 
-          Text(this.Username)
-            .fontSize(40)
+          if(this.login_state)
+            {
+              Image($r("app.media.profile_default_user"))
+                .width(90)
+                .height(90)
+                .margin({left:'15%'})
+              // .borderStyle(BorderStyle.Dotted)
+              // .borderWidth(1)
+              // .borderColor(Color.Blue)
+              Text(this.Username)
+                .fontSize(30)
+                // .margin({bottom:'10%'})
+            }
+          else
+          {
+            Image($r("app.media.profile_default_user"))
+              .width(90)
+              .height(90)
+              .margin({left:'15%'})
 
+            Text(this.login_out_show)
+              .fontSize(30)
+              .onClick(() =>{
+                promptAction.showToast({
+                  message: "你进行了登录操作",
+                  duration: 3000
+                })
+                this.login_state = true
+              })
+              // .margin({bottom:'10%'})
+
+          }
         }
+        .backgroundColor(Color.White)
+        .width('80%')
 
-        Text(this.UserPersonalSign)
-          .fontSize(20)
-          .padding({top:20})
+        if(this.login_state)
+        {
+          Text(this.UserPersonalSign)
+            .fontSize(20)
+            .padding({ top: 20 })
+        }
 
         Scroll() {
           Column() {
@@ -97,51 +129,54 @@ struct ProfileScreen {
             .divider({ strokeWidth: 2, color: Color.Black })
             // .height(100)
 
-            Column({ space: 20 }) {
-              Row() {
-                Image($r("app.media.profile_default_user"))
-                  .width(90)
-                  .height(90)
-                  .borderStyle(BorderStyle.Dotted)
-                  .borderWidth(1)
-                  .borderColor(Color.Blue)
-                Text(this.PictureAbstrate[0])
-                  .fontSize(20)
-              }
+            if(this.login_state) {
+              Column({ space: 20 }) {
+                Row() {
+                  Image($r("app.media.profile_default_user"))
+                    .width(90)
+                    .height(90)
+                    // .borderStyle(BorderStyle.Dotted)
+                    // .borderWidth(1)
+                    // .borderColor(Color.Blue)
+                  Text(this.PictureAbstrate[0])
+                    .fontSize(20)
+                }
 
-              Row() {
-                Image($r("app.media.profile_default_user"))
-                  .width(90)
-                  .height(90)
-                  .borderStyle(BorderStyle.Dotted)
-                  .borderWidth(1)
-                  .borderColor(Color.Blue)
-                Text(this.PictureAbstrate[1])
-                  .fontSize(20)
-              }
+                Row() {
+                  Image($r("app.media.profile_default_user"))
+                    .width(90)
+                    .height(90)
+                    // .borderStyle(BorderStyle.Dotted)
+                    // .borderWidth(1)
+                    // .borderColor(Color.Blue)
+                  Text(this.PictureAbstrate[1])
+                    .fontSize(20)
+                }
 
-              Row() {
-                Image($r("app.media.profile_default_user"))
-                  .width(90)
-                  .height(90)
-                  .borderStyle(BorderStyle.Dotted)
-                  .borderWidth(1)
-                  .borderColor(Color.Blue)
-                Text(this.PictureAbstrate[2])
-                  .fontSize(20)
-              }
+                Row() {
+                  Image($r("app.media.profile_default_user"))
+                    .width(90)
+                    .height(90)
+                    // .borderStyle(BorderStyle.Dotted)
+                    // .borderWidth(1)
+                    // .borderColor(Color.Blue)
+                  Text(this.PictureAbstrate[2])
+                    .fontSize(20)
+                }
 
-              Row() {
-                Image($r("app.media.profile_default_user"))
-                  .width(90)
-                  .height(90)
-                  .borderStyle(BorderStyle.Dotted)
-                  .borderWidth(1)
-                  .borderColor(Color.Blue)
-                Text(this.PictureAbstrate[2])
-                  .fontSize(20)
+                Row() {
+                  Image($r("app.media.profile_default_user"))
+                    .width(90)
+                    .height(90)
+                    // .borderStyle(BorderStyle.Dotted)
+                    // .borderWidth(1)
+                    // .borderColor(Color.Blue)
+                  Text(this.PictureAbstrate[2])
+                    .fontSize(20)
+                }
               }
             }
+
 
           }
         }
@@ -150,12 +185,13 @@ struct ProfileScreen {
 
       }
       .width('100%')
-      .height('70%')
+      .height('60%')
 
 
     }
     .height('100%')
     .width('100%')
+    .backgroundColor($r('app.color.snow_grey'))
 
 
   }
