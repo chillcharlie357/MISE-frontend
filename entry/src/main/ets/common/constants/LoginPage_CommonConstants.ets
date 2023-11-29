@@ -44,6 +44,8 @@ export default class CommonConstants {
    */
   static readonly FULL_PARENT = '100%';
 
+  static readonly EightyPercent_PARENT = '80%';
+
   /**
    * The width of button
    */

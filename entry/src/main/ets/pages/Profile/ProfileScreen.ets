@@ -11,13 +11,26 @@ struct ProfileScreen {
   @State Username: string = "USER"
   @State UserPersonalSign: string = "介绍一下你自己吧"
   @State PictureAbstrate: string[] =["作品1:xxxxxxxx","作品2:xxxxxxxx","作品3:xxxxxxxx"]
-  @State login_state:boolean = false
+  // @State log_in_and_access:boolean = router.getParams()?.['login_in_and_access']
+  // @State log_out_and_exit:boolean = router.getParams()?.['login_out_and_exit']
+  @StorageLink('login_state') login_state:boolean = false
   @State login_out_show: string = "点我登录"
+
 
   build() {
     Column() {
       Row(){
         Row(){
+
+          // if(this.log_in_and_access === true) {
+          //   this.login_state = true
+          //   this.log_in_and_access = false
+          // }
+          //
+          // if(this.log_out_and_exit === true){
+          //
+          // }
+
 
         }
         .width("85%")
@@ -88,7 +101,11 @@ struct ProfileScreen {
                   message: "你进行了登录操作",
                   duration: 3000
                 })
-                this.login_state = true
+                router.pushUrl({
+                  url:'pages/Profile/LoginPage'
+                })
+
+                // this.login_state = true
               })
               // .margin({bottom:'10%'})
 

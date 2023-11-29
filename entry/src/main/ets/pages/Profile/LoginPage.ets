@@ -34,6 +34,7 @@ struct Index {
   @State message: string = 'Hello World'
   @State account: string = '';
   @State password: string = '';
+  @StorageLink('login_state') login_state: boolean = false
   // @State isShowProgress: boolean = false;
   // private timeOutId: number = -1;
 
@@ -49,16 +50,33 @@ struct Index {
         message: '用户名是'+this.account + '密码是'+this.password
       })
 
-      router.pushUrl({
-        url:'pages/Profile/ProfileScreen'
-      })
+      this.login_state = true
+
+      router.back()
 
     }
   }
 
   build() {
 
+
     Column() {
+
+      Row(){
+        Image($r('app.media.back_icon'))
+          .height(48)
+          .width(48)
+          .onClick(() =>{
+            router.back()
+          })
+
+      }
+      .height('50')
+      .width(CommonConstants.FULL_PARENT)
+
+      Line().lineStyle()
+      Line().lineStyle()
+
       Image($r('app.media.icon'))
         .width($r('app.float.logo_image_size'))
         .height($r('app.float.logo_image_size'))
@@ -81,7 +99,9 @@ struct Index {
         .onChange((value: string) => {
           this.account = value;
         })
+
       Line().lineStyle()
+      // Line().lineStyle()
 
       TextInput({ placeholder: $r('app.string.password') })
         .maxLength(CommonConstants.INPUT_ACCOUNT_LENGTH)
@@ -90,6 +110,7 @@ struct Index {
         .onChange((value: string) => {
           this.password = value;
         })
+
       Line().lineStyle()
 
       Row() {
