@@ -49,7 +49,7 @@ struct CommunityScreen {
       .scrollBar(BarState.Auto)
     }
     .width('100%')
-    .backgroundColor($r('app.color.start_window_background'))
+    .backgroundColor("#afddf2")
   }
 }
 
