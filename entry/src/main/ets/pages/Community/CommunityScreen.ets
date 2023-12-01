@@ -7,9 +7,36 @@ import { PostCard } from '../Community/Components/PostCard';
 struct CommunityScreen {
   @State message: string = 'Drawing Panel'
   @State contents: Array<Content> = generateFakeData();
-
+  private swiperController:SwiperController = new SwiperController();
   build() {
     Column() {
+      Swiper(this.swiperController){//此为轮播图组件
+        Text("0")
+          .width('90%')
+          .height(80)
+          .backgroundColor(Color.Yellow)
+          .textAlign(TextAlign.Center)
+          .fontSize(30)
+
+        Text("1")
+          .width('90%')
+          .height(80)
+          .backgroundColor(Color.Green)
+          .textAlign(TextAlign.Center)
+          .fontSize(30)
+
+        Text("2")
+          .width('90%')
+          .height(80)
+          .backgroundColor(Color.Pink)
+          .textAlign(TextAlign.Center)
+          .fontSize(30)
+      }
+      .loop(true)
+      .autoPlay(true)
+      .interval(3000)
+      .borderRadius(12)
+      .margin(10)
       List() {
         ForEach(this.contents, (item: Content) => {
           ListItem() {
@@ -22,7 +49,7 @@ struct CommunityScreen {
       .scrollBar(BarState.Auto)
     }
     .width('100%')
-    .backgroundColor($r('app.color.snow_grey'))
+    .backgroundColor($r('app.color.start_window_background'))
   }
 }
 
