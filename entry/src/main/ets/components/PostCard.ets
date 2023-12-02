@@ -1,4 +1,5 @@
-import { Content } from '../pages/Community/CommunityScreen'
+
+import { Content } from '../data/PostContent';
 
 @Component
 struct PostCard {
