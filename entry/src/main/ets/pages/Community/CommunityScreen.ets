@@ -1,5 +1,6 @@
 import image from '@ohos.multimedia.image';
 import { PostCard } from '../Community/Components/PostCard';
+import { CustomDialogUser } from '../Community/Components/CustomDialogExample';
 
 @Entry
 @Component
@@ -7,9 +8,41 @@ import { PostCard } from '../Community/Components/PostCard';
 struct CommunityScreen {
   @State message: string = 'Drawing Panel'
   @State contents: Array<Content> = generateFakeData();
-
+  private swiperController:SwiperController = new SwiperController();
   build() {
     Column() {
+
+
+      Swiper(this.swiperController){//此为轮播图组件
+        Text("0")
+          .width('90%')
+          .height(80)
+          .backgroundColor(Color.Yellow)
+          .textAlign(TextAlign.Center)
+          .fontSize(30)
+
+        Text("1")
+          .width('90%')
+          .height(80)
+          .backgroundColor(Color.Green)
+          .textAlign(TextAlign.Center)
+          .fontSize(30)
+
+        Text("2")
+          .width('90%')
+          .height(80)
+          .backgroundColor(Color.Pink)
+          .textAlign(TextAlign.Center)
+          .fontSize(30)
+      }
+      .loop(true)
+      .autoPlay(true)
+      .interval(3000)
+      .borderRadius(12)
+      .margin(10)
+
+      CustomDialogUser().zIndex(9999)
+
       List() {
         ForEach(this.contents, (item: Content) => {
           ListItem() {
@@ -20,9 +53,11 @@ struct CommunityScreen {
       .width('100%')
       .height('100%')
       .scrollBar(BarState.Auto)
+      .zIndex(50)
+
     }
     .width('100%')
-    .backgroundColor($r('app.color.snow_grey'))
+    .backgroundColor("#afddf2")
   }
 }
 

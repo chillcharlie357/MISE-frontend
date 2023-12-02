@@ -11,6 +11,7 @@ struct PostCard {
           .objectFit(ImageFit.Cover)
           .width(70)
           .height(70)
+          .margin({left:10})
 
         Column() {
           Text(this.content.title)
@@ -21,7 +22,7 @@ struct PostCard {
             .fontWeight(FontWeight.Regular)
         }
         .padding(20)
-        .margin(2)
+        .margin({left:10})
 
       }
       .padding(2)
@@ -29,26 +30,31 @@ struct PostCard {
       Text(this.content.context)
         .fontSize(16)
         .fontWeight(FontWeight.Regular)
+        .margin({left:20})
+
 
       Grid() {
         ForEach(this.content.images, (item: Resource) => {
           GridItem() {
             Image(item)
               .objectFit(ImageFit.Cover)
-              .width(80)
-              .height(80)
+              .width(60)
+              .height(60)
           }
+          .margin(5)
           .padding(4)
         })
       }
+      .margin(10)
       .maxCount(4)
-
+      Blank()
     }
     .alignItems(HorizontalAlign.Start)
-    .width('100%')
-    .backgroundColor(Color.White)
+    .width('95%')
+    .backgroundColor("#f1f3f5")
     .borderRadius(12)
-    .margin(12)
+    .margin(10)
+    .shadow({ radius: 10, color: Color.Gray, offsetX: 5, offsetY: 10 })
   }
 }
 
