@@ -1,6 +1,6 @@
 import image from '@ohos.multimedia.image';
-import { PostCard } from '../Community/Components/PostCard';
-import { CustomDialogUser } from '../Community/Components/CustomDialogExample';
+import { PostCard } from '../../components/PostCard';
+import { CustomDialogUser } from '../../components/CustomDialogExample';
 
 @Entry
 @Component
@@ -8,12 +8,13 @@ import { CustomDialogUser } from '../Community/Components/CustomDialogExample';
 struct CommunityScreen {
   @State message: string = 'Drawing Panel'
   @State contents: Array<Content> = generateFakeData();
-  private swiperController:SwiperController = new SwiperController();
+  private swiperController: SwiperController = new SwiperController();
+
   build() {
     Column() {
 
 
-      Swiper(this.swiperController){//此为轮播图组件
+      Swiper(this.swiperController) { //此为轮播图组件
         Text("0")
           .width('90%')
           .height(80)
@@ -43,21 +44,30 @@ struct CommunityScreen {
 
       CustomDialogUser().zIndex(9999)
 
-      List() {
-        ForEach(this.contents, (item: Content) => {
-          ListItem() {
-            PostCard({ content: item })
-          }
-        }, content => content.id)
-      }
-      .width('100%')
-      .height('100%')
-      .scrollBar(BarState.Auto)
-      .zIndex(50)
+      PostList({ contents: this.contents })
 
     }
     .width('100%')
     .backgroundColor("#afddf2")
+  }
+}
+
+@Component
+struct PostList {
+  contents: Content[];
+
+  build() {
+    List() {
+      ForEach(this.contents, (item: Content) => {
+        ListItem() {
+          PostCard({ content: item })
+        }
+      }, content => content.id)
+    }
+    .width('100%')
+    .height('100%')
+    .scrollBar(BarState.Auto)
+    .zIndex(50)
   }
 }
 

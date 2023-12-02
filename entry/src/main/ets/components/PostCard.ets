@@ -1,4 +1,4 @@
-import { Content } from '../CommunityScreen'
+import { Content } from '../pages/Community/CommunityScreen'
 
 @Component
 struct PostCard {

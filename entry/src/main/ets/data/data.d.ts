@@ -1,3 +1,5 @@
+// 约定axios的请求返回response的格式
+
 export type UserProfile = {
   id: string
   avatar: string

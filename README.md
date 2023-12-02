@@ -20,3 +20,10 @@
 
 [Axios](https://gitee.com/openharmony-sig/ohos_axios)
 
+
+# 项目文件说明
+
+entry/src/main/ets/data/data.d.ts
+[data.d.ts](entry%2Fsrc%2Fmain%2Fets%2Fdata%2Fdata.d.ts)：
+约定axios的response格式
+

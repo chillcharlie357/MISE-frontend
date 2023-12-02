@@ -169,7 +169,7 @@ struct ProfileScreen {
                     Image(item)
                       .width(90)
                       .height(90)
-                    Text(item)
+                    Text("item")
                       .fontSize(20)
                   }
                 }
