@@ -6,18 +6,27 @@ import { UserProfile } from '../../data/data'
 import router from '@ohos.router'
 import image from '@ohos.multimedia.image'
 
+
+let options = {
+  alphaType: 0, // 透明度
+  editable: false, // 是否可编辑
+  pixelFormat: 3, // 像素格式
+  scaleMode: 1, // 缩略值
+  size: { height: 100, width: 100 }
+} // 创建图片大
+
 @Entry
 @Component
 struct ProfileScreen {
   image_add = 'app.media.profile_default_user'
   private listItem: string[] = ["个人信息", "历史记录", "收藏夹"]
   @State username: string = "USER"
-  @State avatar: PixelMap = null
+  @State avatar: string = ""
   @State description: string = "介绍一下你自己吧"
-  @State gallery: PixelMap[] = []
+  @State gallery: string[] = []
   @State login_state: boolean = true
   @State login_out_show: string = "log out"
-
+  //TODO:无法加载网络图片
   aboutToAppear() {
     console.info("Page Show")
     axios.get<UserProfile>('/users/profile')
@@ -26,21 +35,24 @@ struct ProfileScreen {
         console.log("Data: " + JSON.stringify(res.data))
         this.username = res.data.name
         this.description = res.data.description
-        image.createImageSource(res.data.avatar)
-          .createPixelMap()
-          .then((pixelMap) => {
-            this.avatar = pixelMap
-          })
-        res.data.gallery
-          .map(
-            (item) => image
-              .createImageSource(item)
-              .createPixelMap()
-              .then(
-                (pixelMap) => {
-                  this.gallery.push(pixelMap)
-                }
-              ))
+        this.gallery = res.data.gallery
+        this.avatar = res.data.avatar
+        this.gallery = res.data.gallery
+
+        // image.createImageSource(res.data.avatar)
+        //   .createPixelMap(options)
+        //   .then((pixelMap) => {
+        //     this.avatar = pixelMap
+        //   })
+        //
+        // res.data.gallery.map(
+        //   (item) => image.createImageSource(item)
+        //     .createPixelMap(options)
+        //     .then(
+        //       (pixelMap) => {
+        //         this.gallery.push(pixelMap)
+        //       }
+        //     ))
       })
       .catch((err) => {
         console.error(err);
@@ -81,7 +93,7 @@ struct ProfileScreen {
         Row({ space: 20 }) {
 
           if (this.login_state) {
-            Image($r("app.media.profile_default_user"))
+            Image(this.avatar)
               .width(90)
               .height(90)
               .margin({ left: '15%' })
@@ -93,7 +105,7 @@ struct ProfileScreen {
             // .margin({bottom:'10%'})
           }
           else {
-            Image($r("app.media.profile_default_user"))
+            Image(this.avatar)
               .width(90)
               .height(90)
               .margin({ left: '15%' })

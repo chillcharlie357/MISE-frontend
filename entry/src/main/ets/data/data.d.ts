@@ -1,9 +1,9 @@
 export type UserProfile = {
   id: string
-  avatar: any
+  avatar: string
   name: string
   phoneNum: string
   description: string
-  gallery: any[]
+  gallery: string[]
 }
 
