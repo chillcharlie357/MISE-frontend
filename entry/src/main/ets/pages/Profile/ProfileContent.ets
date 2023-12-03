@@ -1,4 +1,5 @@
 import { PostList } from '../../components/PostList'
+import { PostDeny } from '../../components/PostDeny'
 import { Content } from '../../data/PostContent'
 import { fakePostContentData } from '../../utils/fakePostContent'
 
@@ -6,22 +7,34 @@ import { fakePostContentData } from '../../utils/fakePostContent'
 @Preview
 struct ProfileContent {
   private contents: Content[] = fakePostContentData()
+  @StorageLink('login_state') login_state: boolean = false
 
   build() {
     Row() {
       Tabs({ barPosition: BarPosition.Start }) {
         TabContent() {
-          PostList({ contents: this.contents })
+          if(this.login_state)
+            PostList({ contents: this.contents })
+          else
+            PostDeny()
+
+
         }
         .tabBar('作品')
 
         TabContent() {
-          PostList({ contents: this.contents })
+          if(this.login_state)
+            PostList({ contents: this.contents })
+          else
+            PostDeny()
         }
         .tabBar('收藏')
 
         TabContent() {
-          PostList({ contents: this.contents })
+          if(this.login_state)
+            PostList({ contents: this.contents })
+          else
+            PostDeny()
         }
         .tabBar('赞过')
       }

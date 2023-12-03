@@ -1,11 +1,43 @@
 import { CardView } from '@isrc/easyui'
-
+import promptAction from '@ohos.promptAction';
 @Component
 struct Avatar {
   private avatarUrl: string
   private userName: string
   private description: string
   private uid: string
+  @StorageLink('login_state') login_state: boolean = false
+
+  logout_trial():void{
+    try{
+      promptAction.showDialog({
+        'title':"登出提示",
+        'message':"你确定要登出吗？",
+        'buttons':[
+          {
+          text:"确定",
+          color:'#000000'
+          },
+          {
+            text:"取消",
+            color:'#000000'
+          }]
+      },
+        (err,data) =>{
+          if(err){
+            console.info('showDialog err: ' + err);
+            return;
+          }
+          console.info('showDialog success callback, click button: ' + data.index);
+          if(data.index === 0)
+              this.login_state = false
+        })
+
+    }
+    catch(error){
+      console.error(`showDialog args error code is ${error.code}, message is ${error.message}`);
+    };
+  }
 
   build() {
     Row() {
@@ -33,9 +65,16 @@ struct Avatar {
                   .fontSize(15)
                   .baselineOffset(TextAlign.Start)
               }
-            }.width("80%")
+            }.width("60%")
             .alignItems(HorizontalAlign.Start)
             .padding({ bottom: 15 })
+
+            Image($r('app.media.profile_logout'))
+              .height(30)
+              .width(30)
+              .onClick(() =>{
+                    this.logout_trial()
+              })
           }
           .padding({ left: 10, top: 15 })
 

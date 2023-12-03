@@ -35,12 +35,14 @@ struct PostCard {
 
 
       Grid() {
-        ForEach(this.content.images, (item: Resource) => {
+        ForEach(this.content.images, (item: Resource,index:number) => {
+
           GridItem() {
-            Image(item)
-              .objectFit(ImageFit.Cover)
-              .width(60)
-              .height(60)
+
+              Image(item)
+                .objectFit(ImageFit.Cover)
+                .width(60)
+                .height(60)
           }
           .margin(5)
           .padding(4)
@@ -49,6 +51,7 @@ struct PostCard {
       .margin(10)
       .maxCount(4)
       Blank()
+
     }
     .alignItems(HorizontalAlign.Start)
     .width('95%')
@@ -62,7 +65,7 @@ struct PostCard {
 @Preview
 @Component
 struct CardPre {
-  filledArray: Array<Resource> = Array(4).fill($r('app.media.icon'));
+  filledArray: Array<Resource> = Array(5).fill($r('app.media.icon'));
   item: Content = new Content(
     1,
     $r('app.media.icon'),
