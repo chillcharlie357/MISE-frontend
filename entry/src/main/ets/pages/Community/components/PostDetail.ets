@@ -21,39 +21,52 @@ struct PostDetail {
   }
 
   build() {
-    Column() {
+    Flex({ direction: FlexDirection.Column }) {
 
       Swiper() {
-
         ForEach(this.images, (item: string) => {
           Image(item)
             .width("90%")
-            .height(400)
+            .width(400)
+            .objectFit(ImageFit.Cover)
         })
       }
 
-
-      Column({space: 10}) {
-        Text(this.title)
-          .fontSize(18)
-        Text(this.content)
-          .fontSize(14)
-        Divider()
-
-      }
-      .alignItems(HorizontalAlign.Start)
-      .width('95%')
-      .borderRadius(12)
-      .margin(10)
-      .padding({top: 10})
+      PostContent({
+        title: this.title,
+        content: this.content
+      })
+        .width('95%')
+        .margin(10)
+        .padding({ top: 10 })
 
       Comments()
-        .padding({top:10})
+        .padding({ top: 10 })
+        .flexShrink(3)
     }
-
+    .width('100%')
+    .height('100%')
   }
 }
 
+@Component
+struct PostContent {
+  private title: string = "Hello World"
+  private content: string = "Hello World"
+
+  build() {
+    Column({ space: 10 }) {
+      Text(this.title)
+        .fontSize(18)
+      Text(this.content)
+        .fontSize(14)
+      Divider()
+    }
+    .alignItems(HorizontalAlign.Start)
+    .borderRadius(12)
+
+  }
+}
 
 @Component
 struct pre {

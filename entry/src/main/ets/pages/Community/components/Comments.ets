@@ -3,6 +3,7 @@ import { CommentBlock } from './CommentBlock'
 @Component
 struct Comments {
   private avatar: string = "https://dummyimage.com/300/09f.png/fff"
+  private commentsList: number[] = Array.from({ length: 10 }, (v, k) => k + 1)
 
   build() {
     Column() {
@@ -21,21 +22,22 @@ struct Comments {
       }
 
       List({ space: 8 }) {
-        ForEach([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], (item) => {
+        ForEach(this.commentsList, (item) => {
           ListItem() {
-            CommentBlock()
+            CommentBlock({content: item.toString()})
           }
         }, (item) => item.toString())
       }
-      .width('100%')
       .scrollBar(BarState.Auto)
-      .padding({ top: 10 })
       .divider({
         strokeWidth: 1,
         startMargin: 60,
         endMargin: 10,
         color: '#ffe9f0f0'
       })
+      .width("100%")
+      .padding({ top: 10 })
+
     }
     .width('100%')
 
