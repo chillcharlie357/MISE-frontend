@@ -56,18 +56,16 @@ struct ProfileScreen {
   build() {
     Column() {
 
-     if(this.login_state)
-     {
-       Avatar({
-         avatarUrl: this.avatarUrl,
-         userName: this.username,
-         description: this.description
-       })
-     }
-     else
-     {
-       BeforeLog()
-     }
+      if (this.login_state) {
+        Avatar({
+          avatarUrl: this.avatarUrl,
+          userName: this.username,
+          description: this.description
+        })
+      }
+      else {
+        BeforeLog()
+      }
       ProfileContent()
 
     }

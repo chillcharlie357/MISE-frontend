@@ -1,4 +1,3 @@
-import { CardView } from '@isrc/easyui'
 import promptAction from '@ohos.promptAction';
 @Component
 struct Avatar {

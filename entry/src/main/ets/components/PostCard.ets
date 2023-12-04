@@ -1,4 +1,4 @@
-
+import router from '@ohos.router';
 import { Content } from '../data/PostContent';
 
 @Component
@@ -12,7 +12,7 @@ struct PostCard {
           .objectFit(ImageFit.Cover)
           .width(70)
           .height(70)
-          .margin({left:10})
+          .margin({ left: 10 })
 
         Column() {
           Text(this.content.title)
@@ -23,7 +23,7 @@ struct PostCard {
             .fontWeight(FontWeight.Regular)
         }
         .padding(20)
-        .margin({left:10})
+        .margin({ left: 10 })
 
       }
       .padding(2)
@@ -31,18 +31,18 @@ struct PostCard {
       Text(this.content.context)
         .fontSize(16)
         .fontWeight(FontWeight.Regular)
-        .margin({left:20})
+        .margin({ left: 20 })
 
 
       Grid() {
-        ForEach(this.content.images, (item: Resource,index:number) => {
+        ForEach(this.content.images, (item: Resource, index: number) => {
 
           GridItem() {
 
-              Image(item)
-                .objectFit(ImageFit.Cover)
-                .width(60)
-                .height(60)
+            Image(item)
+              .objectFit(ImageFit.Cover)
+              .width(60)
+              .height(60)
           }
           .margin(5)
           .padding(4)
@@ -50,6 +50,7 @@ struct PostCard {
       }
       .margin(10)
       .maxCount(4)
+
       Blank()
 
     }
@@ -59,6 +60,15 @@ struct PostCard {
     .borderRadius(12)
     .margin(10)
     .shadow({ radius: 10, color: Color.Gray, offsetX: 5, offsetY: 10 })
+    .onClick(() => {
+      console.log(`click: ${this.content.id}`)
+      router.pushUrl({
+        url: "pages/Community/components/PostDetail",
+        params: {
+          id: this.content.id
+        }
+      })
+    })
   }
 }
 
