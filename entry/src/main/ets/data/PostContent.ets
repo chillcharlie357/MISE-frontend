@@ -1,17 +1,17 @@
 class Content {
   id: number;
-  avatar: Resource;
+  avatar: string;
   title: string;
   context: string;
   description: string;
-  images: Array<Resource>;
+  images: Array<string>;
 
   constructor(id: number,
-              avatar: Resource,
+              avatar: string,
               title: string,
               context: string,
               description: string,
-              images ?: Array<Resource>
+              images ?: Array<string>
   ) {
     this.id = id;
     this.avatar = avatar;

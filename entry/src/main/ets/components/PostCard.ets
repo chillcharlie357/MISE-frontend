@@ -75,10 +75,10 @@ struct PostCard {
 @Preview
 @Component
 struct CardPre {
-  filledArray: Array<Resource> = Array(5).fill($r('app.media.icon'));
+  filledArray: Array<string> = Array(5).fill("https://dummyimage.com/20/09f/fff.png");
   item: Content = new Content(
     1,
-    $r('app.media.icon'),
+    "https://dummyimage.com/20/09f/fff.png",
     `title`,
     `content`,
     `description`,
