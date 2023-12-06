@@ -1,12 +1,19 @@
 // 约定axios的请求返回response的格式
 
 export type UserProfileResponse = {
-  id: string
+  id: number
   avatar: string
-  name: string
+  username: string
   phoneNum: string
   description: string
-  gallery: string[]
+  followers: number
+  following: number
+  gallery: galleryItem[]
+}
+
+export type galleryItem = {
+  id: number
+  url: string
 }
 
 export type LoginRequest = {
@@ -17,6 +24,7 @@ export type LoginRequest = {
 export type LoginResponse = {
   msg: string;
   saTokenInfo: SaTokenInfo;
+
   [property: string]: any;
 }
 
@@ -32,6 +40,7 @@ export interface SaTokenInfo {
   tokenSessionTimeout: number;
   tokenTimeout: number;
   tokenValue: string;
+
   [property: string]: any;
 }
 
