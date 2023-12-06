@@ -8,6 +8,9 @@ struct CommentBlock {
   private username: string = "用户名"
   private content: string = "评论内容"
   @State private likes: number = 0
+  private isLiked: Boolean = false
+  @State private likeURL: string = 'pages/Community/icon/ic_public_favor.svg'
+
 
   build() {
     Row() {
@@ -29,13 +32,23 @@ struct CommentBlock {
 
       Row() {
         Button({ type: ButtonType.Circle, stateEffect: true }) {
-          Image($r('app.media.ic_public_favor')).width(30).height(30)
+          Image(this.likeURL).width(30).height(30)
         }
         .margin({ left: 20 })
         .backgroundColor(Color.White)
         .onClick(() => {
-          console.log("点赞")
-          this.likes++
+          if(this.isLiked==false){
+            console.info(this.likes.toString())
+            this.isLiked=true
+            this.likes++
+            this.likeURL='pages/Community/icon/ic_public_favor_filled.svg'
+          }else{
+            this.isLiked=false
+            this.likes--
+            this.likeURL='pages/Community/icon/ic_public_favor.svg'
+          }
+         // console.log("点赞")
+
         })
 
         Text(this.likes.toString())

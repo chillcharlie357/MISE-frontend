@@ -14,7 +14,7 @@ struct Comments {
           .borderRadius(20)
           .margin({ right: 10 })
         TextArea({ placeholder: 'Write a comment...' })
-          .width('100%')
+          .width('80%')
           .height(40)
           .borderRadius(20)
           .padding({ left: 10 })

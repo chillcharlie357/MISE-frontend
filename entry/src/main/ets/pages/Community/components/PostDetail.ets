@@ -43,6 +43,7 @@ struct PostDetail {
       Comments()
         .padding({ top: 10 })
         .flexShrink(3)
+
     }
     .width('100%')
     .height('100%')
