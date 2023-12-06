@@ -63,7 +63,7 @@ struct PostCard {
     .onClick(() => {
       console.log(`click: ${this.content.id}`)
       router.pushUrl({
-        url: "pages/Community/components/PostDetail",
+        url: "pages/Community/PostDetail",
         params: {
           id: this.content.id
         }

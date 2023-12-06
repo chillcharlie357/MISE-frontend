@@ -1,7 +1,7 @@
-import { PostList } from '../../components/PostList'
-import { PostDeny } from '../../components/PostDeny'
-import { Content } from '../../data/PostContent'
-import { fakePostContentData } from '../../utils/fakePostContent'
+import { PostList } from '../../../components/PostList'
+import { PostDeny } from './PostDeny'
+import { Content } from '../../../data/PostContent'
+import { fakePostContentData } from '../../../utils/fakePostContent'
 
 @Component
 @Preview

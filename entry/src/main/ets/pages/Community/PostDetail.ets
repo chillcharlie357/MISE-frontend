@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { Comments } from './Comments';
+import { Comments } from './components/Comments';
 
 @Entry
 @Component

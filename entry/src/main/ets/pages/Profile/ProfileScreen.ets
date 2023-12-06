@@ -5,9 +5,9 @@ import axios from '../../axios'
 import { UserProfile } from '../../data/data'
 import router from '@ohos.router'
 import image from '@ohos.multimedia.image'
-import { ProfileContent } from './ProfileContent'
-import { Avatar } from './Avatar'
-import { BeforeLog } from './BeforeLog'
+import { ProfileContent } from './compontents/ProfileContent'
+import { Avatar } from './compontents/Avatar'
+import { BeforeLog } from './compontents/BeforeLog'
 
 @Entry
 @Component
@@ -20,33 +20,16 @@ struct ProfileScreen {
   @State gallery: string[] = []
   @StorageLink('login_state') login_state: boolean = false
   @State login_out_show: string = "log out"
-  //TODO:无法加载网络图片
   aboutToAppear() {
     console.info("Page Show")
     axios.get<UserProfile>('/users/profile')
       .then((res) => {
-        // hilog.info(0x1,"1",res.data)
         console.log("Data: " + JSON.stringify(res.data))
         this.username = res.data.name
         this.description = res.data.description
         this.gallery = res.data.gallery
         this.avatarUrl = res.data.avatar
         this.gallery = res.data.gallery
-
-        // image.createImageSource(res.data.avatarUrl)
-        //   .createPixelMap(options)
-        //   .then((pixelMap) => {
-        //     this.avatarUrl = pixelMap
-        //   })
-        //
-        // res.data.gallery.map(
-        //   (item) => image.createImageSource(item)
-        //     .createPixelMap(options)
-        //     .then(
-        //       (pixelMap) => {
-        //         this.gallery.push(pixelMap)
-        //       }
-        //     ))
       })
       .catch((err) => {
         console.error(err);
