@@ -50,7 +50,7 @@ struct LoginPage {
             // login success
             console.log(JSON.stringify(res.data))
             this.login_state = true
-            router.pushUrl({ url: 'pages/Profile/ProfileScreen' })
+            router.pushUrl({ url: 'pages/Index' })
           }
         })
         .catch((error: any) => {
