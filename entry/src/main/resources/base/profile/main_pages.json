@@ -5,6 +5,7 @@
     "pages/DrawingPanel/DrawingPanelScreen",
     "pages/Profile/ProfileScreen",
     "pages/Profile/LoginPage",
-    "pages/Community/PostDetail"
+    "pages/Community/PostDetail",
+    "pages/Profile/RegisterScreen"
   ]
 }
