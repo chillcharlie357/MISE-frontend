@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-import { Comments } from './Comments';
+import { Comments } from './components/Comments';
 
 @Entry
 @Component
@@ -43,6 +43,7 @@ struct PostDetail {
       Comments()
         .padding({ top: 10 })
         .flexShrink(3)
+
     }
     .width('100%')
     .height('100%')

@@ -1,41 +1,47 @@
 import promptAction from '@ohos.promptAction';
+
 @Component
 struct Avatar {
-  private avatarUrl: string
-  private userName: string
-  private description: string
-  private uid: string
+  @Prop avatarUrl: string
+  @Prop username: string
+  @Prop description: string
+  @Prop uid: string
   @StorageLink('login_state') login_state: boolean = false
 
-  logout_trial():void{
-    try{
+  aboutToAppear() {
+    console.info("avatarUrl: " + this.avatarUrl)
+  }
+
+  logout_trial(): void {
+    try {
       promptAction.showDialog({
-        'title':"登出提示",
-        'message':"你确定要登出吗？",
-        'buttons':[
+        'title': "登出提示",
+        'message': "你确定要登出吗？",
+        'buttons': [
           {
-          text:"确定",
-          color:'#000000'
+            text: "确定",
+            color: '#000000'
           },
           {
-            text:"取消",
-            color:'#000000'
+            text: "取消",
+            color: '#000000'
           }]
       },
-        (err,data) =>{
-          if(err){
+        (err, data) => {
+          if (err) {
             console.info('showDialog err: ' + err);
             return;
           }
           console.info('showDialog success callback, click button: ' + data.index);
-          if(data.index === 0)
-              this.login_state = false
+          if (data.index === 0)
+            this.login_state = false
         })
 
     }
-    catch(error){
+    catch (error) {
       console.error(`showDialog args error code is ${error.code}, message is ${error.message}`);
-    };
+    }
+    ;
   }
 
   build() {
@@ -53,7 +59,7 @@ struct Avatar {
               .alignSelf(ItemAlign.Center)
 
             Column({ space: 5 }) {
-              Text(this.userName)
+              Text(this.username)
                 .fontSize(18)
                 .fontWeight(FontWeight.Bold)
 
@@ -71,8 +77,8 @@ struct Avatar {
             Image($r('app.media.profile_logout'))
               .height(30)
               .width(30)
-              .onClick(() =>{
-                    this.logout_trial()
+              .onClick(() => {
+                this.logout_trial()
               })
           }
           .padding({ left: 10, top: 15 })
@@ -83,7 +89,7 @@ struct Avatar {
           .fontSize(15)
           .layoutWeight(2)
           .alignSelf(ItemAlign.Start)
-          .padding({left: 15})
+          .padding({ left: 15 })
       }
       .backgroundColor("#ffffffff")
       .width('100%')
@@ -114,11 +120,11 @@ struct AvatarPre {
   build() {
     Row() {
       // CardView()
-      Avatar({
-        avatarUrl: this.avatarUrl,
-        userName: this.userName,
-        description: this.description
-      })
+      // Avatar({
+      //   avatarUrl: this.avatarUrl,
+      //   username: this.userName,
+      //   description: this.description
+      // })
     }
     .width('100%')
     .height('100%')

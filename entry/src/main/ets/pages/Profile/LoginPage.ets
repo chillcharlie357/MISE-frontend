@@ -1,10 +1,10 @@
 import promptAction from '@ohos.promptAction';
-
 import router from '@ohos.router';
 import CommonConstants from '../../common/constants/LoginPage_CommonConstants';
+import axios from '../../axios';
+import { LoginRequest, LoginResponse } from '../../data/data';
 
-@Extend(TextInput)
-function inputStyle() {
+@Extend(TextInput) function inputStyle() {
   .placeholderColor($r('app.color.loginPage_placeholder_color'))
   .height($r('app.float.login_input_height'))
   .fontSize($r('app.float.big_text_size'))
@@ -14,15 +14,13 @@ function inputStyle() {
   .margin({ top: $r('app.float.input_margin_top') })
 }
 
-@Extend(Line)
-function lineStyle() {
+@Extend(Line) function lineStyle() {
   .width(CommonConstants.FULL_PARENT)
   .height($r('app.float.line_height'))
   .backgroundColor($r('app.color.loginPage_line_color'))
 }
 
-@Extend(Text)
-function blueTextStyle() {
+@Extend(Text) function blueTextStyle() {
   .fontColor($r('app.color.loginPage_blue_text_color'))
   .fontSize($r('app.float.small_text_size'))
   .fontWeight(FontWeight.Medium)
@@ -30,29 +28,37 @@ function blueTextStyle() {
 
 @Entry
 @Component
-struct Index {
-  @State message: string = 'Hello World'
-  @State account: string = '';
-  @State password: string = '';
+struct LoginPage {
+  @State email: string = 'default@test';
+  @State password: string = 'default';
   @StorageLink('login_state') login_state: boolean = false
-  // @State isShowProgress: boolean = false;
-  // private timeOutId: number = -1;
-
 
   login(): void {
-    if (this.account === '' || this.password === '') {
+    if (this.email === '' || this.password === '') {
       promptAction.showToast({
         message: $r('app.string.input_empty_tips')
       })
 
     } else {
-      promptAction.showToast({
-        message: '用户名是'+this.account + '密码是'+this.password
-      })
-
-      this.login_state = true
-
-      router.back()
+      const loginRequest: LoginRequest = {
+        email: this.email,
+        password: this.password
+      }
+      axios.post<LoginResponse>('/user/login', loginRequest)
+        .then((res) => {
+          if (res.status === 200) {
+            // login success
+            console.log(JSON.stringify(res.data))
+            this.login_state = true
+            router.pushUrl({ url: 'pages/Index' })
+          }
+        })
+        .catch((error: any) => {
+          promptAction.showToast({
+            message: "login failed"
+          })
+          console.log(error)
+        })
 
     }
   }
@@ -62,11 +68,11 @@ struct Index {
 
     Column() {
 
-      Row(){
+      Row() {
         Image($r('app.media.back_icon'))
           .height(48)
           .width(48)
-          .onClick(() =>{
+          .onClick(() => {
             router.back()
           })
 
@@ -97,11 +103,10 @@ struct Index {
         .type(InputType.Number)
         .inputStyle()
         .onChange((value: string) => {
-          this.account = value;
+          this.email = value;
         })
 
       Line().lineStyle()
-      // Line().lineStyle()
 
       TextInput({ placeholder: $r('app.string.password') })
         .maxLength(CommonConstants.INPUT_ACCOUNT_LENGTH)
@@ -115,10 +120,8 @@ struct Index {
 
       Row() {
         Text($r('app.string.register_account')).blueTextStyle()
-          .onClick(() =>{
-            promptAction.showToast({
-              message: '你点击了登记账户界面'
-            })
+          .onClick(() => {
+            router.pushUrl({ url: 'pages/Profile/RegisterScreen' })
           })
 
 
@@ -153,5 +156,4 @@ struct Index {
       bottom: $r('app.float.login_page_padding_bottom')
     })
   }
-
 }

@@ -1,6 +1,6 @@
 export default class CommonConstants {
   /**
-   * Input length of the account.
+   * Input length of the email.
    */
   static readonly INPUT_ACCOUNT_LENGTH = 11;
 
