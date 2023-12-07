@@ -9,7 +9,7 @@ struct Avatar {
   @StorageLink('login_state') login_state: boolean = false
 
   aboutToAppear() {
-    console.info(this.username)
+    console.info("avatarUrl: " + this.avatarUrl)
   }
 
   logout_trial(): void {
@@ -120,11 +120,11 @@ struct AvatarPre {
   build() {
     Row() {
       // CardView()
-      Avatar({
-        avatarUrl: this.avatarUrl,
-        username: this.userName,
-        description: this.description
-      })
+      // Avatar({
+      //   avatarUrl: this.avatarUrl,
+      //   username: this.userName,
+      //   description: this.description
+      // })
     }
     .width('100%')
     .height('100%')

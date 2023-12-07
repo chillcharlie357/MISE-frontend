@@ -2,7 +2,7 @@ import promptAction from '@ohos.promptAction'
 import hilog from '@ohos.hilog'
 
 import axios from '../../axios'
-import { galleryItem, UserProfileResponse } from '../../data/data'
+import { UserProfileResponse } from '../../data/data'
 import router from '@ohos.router'
 import image from '@ohos.multimedia.image'
 import { ProfileContent } from './compontents/ProfileContent'
@@ -19,7 +19,6 @@ struct ProfileScreen {
   @State uid: string = ''
   @State followers: number = 0
   @State following: number = 0
-  @State gallery: galleryItem[] = []
   @StorageLink('login_state') login_state: boolean = false
   @State login_out_show: string = "log out"
 
@@ -32,8 +31,7 @@ struct ProfileScreen {
 
           this.username = res.data.username
           this.description = res.data.description
-          this.avatarUrl = res.data.avatar
-          this.gallery = res.data.gallery
+          this.avatarUrl = res.data.avatarUrl
           this.followers = res.data.followers
           this.following = res.data.following
           this.uid = '' + res.data.id
