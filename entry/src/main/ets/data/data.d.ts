@@ -2,19 +2,14 @@
 
 export type UserProfileResponse = {
   id: number
-  avatar: string
+  avatarUrl: string
   username: string
   phoneNum: string
   description: string
   followers: number
   following: number
-  gallery: galleryItem[]
 }
 
-export type galleryItem = {
-  id: number
-  url: string
-}
 
 export type LoginRequest = {
   email: string
