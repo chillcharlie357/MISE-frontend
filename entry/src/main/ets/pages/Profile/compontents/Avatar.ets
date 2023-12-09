@@ -57,6 +57,7 @@ struct Avatar {
               .borderColor("#ffc3c3c3")
               .borderRadius(5)
               .alignSelf(ItemAlign.Center)
+              .objectFit(ImageFit.Auto)
 
             Column({ space: 5 }) {
               Text(this.username)
