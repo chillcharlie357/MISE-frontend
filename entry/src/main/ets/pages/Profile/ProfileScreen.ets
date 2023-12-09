@@ -25,7 +25,7 @@ struct ProfileScreen {
   aboutToAppear() {
     console.info("ProfileScreen appear")
     if (this.login_state) {
-      axios.get<UserProfileResponse>('/user/profile')
+      axios.get<UserProfileResponse>('/user/info')
         .then((res) => {
           console.log("Data: " + JSON.stringify(res.data))
 
@@ -60,7 +60,6 @@ struct ProfileScreen {
 
       ProfileContent()
     }
-
     .height('100%')
     .width('100%')
     .backgroundColor($r('app.color.snow_grey'))
