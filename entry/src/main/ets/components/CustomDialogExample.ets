@@ -1,11 +1,12 @@
 import http from '@ohos.net.http';
+
 class Message {
-  rule: number;             //新增身份0是用户，1是ai。方便渲染
+  role: number; //新增身份0是用户，1是ai。方便渲染
   id: number;
   value: string;
 
-  constructor(rule: number,id: number, value: string) {
-    this.rule=rule;
+  constructor(role: number, id: number, value: string) {
+    this.role = role;
     this.id = id;
     this.value = value;
   }
@@ -26,8 +27,7 @@ struct CustomDialogExample {
   private idCount: number = 0;
   private messageValue: string;
 
-
-  getAI(value:string){
+  getAI(value: string) {
     let httpRequest = http.createHttp();
     httpRequest.request(
       // 填写http请求的url地址，可以带参数也可以不带参数。URL地址需要开发者自定义。请求的参数可以在extraData中指定
@@ -60,11 +60,11 @@ struct CustomDialogExample {
         readTimeout: 60000, // 可选，默认为60s
       }, (err, data) => {
       if (!err) {
-        if (typeof data.result == 'string'){
-          let jsonString : string = data.result;
+        if (typeof data.result == 'string') {
+          let jsonString: string = data.result;
           let jsonObject = JSON.parse(jsonString);
-          if(jsonObject.choices[0].message.content!=null){
-            this.arr.push(new Message(1,this.idCount++,jsonObject.choices[0].message.content));
+          if (jsonObject.choices[0].message.content != null) {
+            this.arr.push(new Message(1, this.idCount++, jsonObject.choices[0].message.content));
           }
 
         }
@@ -86,8 +86,8 @@ struct CustomDialogExample {
         RelativeContainer() {
           Text('Q&A Assistant').fontSize(15)
             .alignRules({
-              middle:{ anchor:"__container__", align:HorizontalAlign.Center},
-              center:{ anchor:"__container__", align:VerticalAlign.Center}
+              middle: { anchor: "__container__", align: HorizontalAlign.Center },
+              center: { anchor: "__container__", align: VerticalAlign.Center }
             })
             .id("text1")
 
@@ -97,7 +97,7 @@ struct CustomDialogExample {
           .width(20)
           .height(20)
           .alignRules({
-            center:{ anchor:"__container__", align:VerticalAlign.Center},
+            center: { anchor: "__container__", align: VerticalAlign.Center },
             right: { anchor: "__container__", align: HorizontalAlign.End },
           })
           .backgroundColor(0x65cafe)
@@ -112,11 +112,11 @@ struct CustomDialogExample {
       }.margin({ top: 8, bottom: 8 }).width("100%").height(20)
 
       //聊天界面
-      Scroll(this.scroller){
+      Scroll(this.scroller) {
         Column() {
           ForEach(this.arr, (item: Message) => {
-            if(item.rule==0){
-              Row(){
+            if (item.role == 0) {
+              Row() {
                 //Text(item.id.toString())
                 Text(item.value)
                   .backgroundColor(0xffffff)
@@ -124,34 +124,33 @@ struct CustomDialogExample {
                   .borderRadius(8)
                   .borderWidth(8)
                   .borderColor(0xffffff)
-                  .margin({right: 5, left: 5})
-                  .textOverflow({overflow:TextOverflow.None})
+                  .margin({ right: 5, left: 5 })
+                  .textOverflow({ overflow: TextOverflow.None })
                 Image($r("app.media.user"))
                   .width(35)
                   .height(35)
               }
               .width("90%")
               .justifyContent(FlexAlign.End)
-              .margin({top : 8, bottom: 8})
+              .margin({ top: 8, bottom: 8 })
+            } else {
+              Row() {
+                Image($r("app.media.user"))
+                  .width(35)
+                  .height(35)
+                Text(item.value)
+                  .backgroundColor(0xffffff)
+                  .textAlign(TextAlign.Start)
+                  .borderRadius(8)
+                  .borderWidth(8)
+                  .borderColor(0xffffff)
+                  .margin({ right: 5, left: 5 })
+                  .textOverflow({ overflow: TextOverflow.None })
+              }
+              .width("90%")
+              .justifyContent(FlexAlign.Start)
+              .margin({ top: 8, bottom: 8 })
             }
-          else {
-            Row(){
-              Image($r("app.media.user"))
-                .width(35)
-                .height(35)
-              Text(item.value)
-                .backgroundColor(0xffffff)
-                .textAlign(TextAlign.Start)
-                .borderRadius(8)
-                .borderWidth(8)
-                .borderColor(0xffffff)
-                .margin({right: 5, left: 5})
-                .textOverflow({overflow:TextOverflow.None})
-            }
-            .width("90%")
-            .justifyContent(FlexAlign.Start)
-            .margin({top : 8, bottom: 8})
-          }
           }, (item: Message) => item.value)
 
 
@@ -163,22 +162,24 @@ struct CustomDialogExample {
       // 对话输入框
       Row() {
         RelativeContainer() {
-          TextInput({ placeholder: '输入你的问题', text: this.messageValue }).height(35).width('80%')
+          TextInput({ placeholder: '输入你的问题', text: this.messageValue })
+            .height(35)
+            .width('80%')
             .alignRules({
-              center:{ anchor:"__container__", align:VerticalAlign.Center},
-              left:{ anchor:"__container__", align:HorizontalAlign.Start}
+              center: { anchor: "__container__", align: VerticalAlign.Center },
+              left: { anchor: "__container__", align: HorizontalAlign.Start }
             })
             .placeholderFont({ size: 13 })
             .borderRadius(8)
             .id("text_input1")
-            .margin({left: 8})
+            .margin({ left: 8 })
             .enterKeyType(EnterKeyType.Send)
-            .onChange((value: string)=>{
+            .onChange((value: string) => {
               this.messageValue = value;
             })
-            .onSubmit(()=>{
+            .onSubmit(() => {
               this.idCount++;
-              this.arr.push(new Message(0,this.idCount, this.messageValue));
+              this.arr.push(new Message(0, this.idCount, this.messageValue));
               //console.info(this.idCount+this.messageValue)
               this.getAI(this.messageValue)
               //this.messageValue = "";
@@ -188,9 +189,10 @@ struct CustomDialogExample {
           Button({ type: ButtonType.Normal, stateEffect: true }) {
             Text("发送").fontColor(0xffffff).fontSize(13)
           }
-          .width(50).height(35)
+          .width(50)
+          .height(35)
           .alignRules({
-            center:{ anchor:"__container__", align:VerticalAlign.Center},
+            center: { anchor: "__container__", align: VerticalAlign.Center },
             right: { anchor: "__container__", align: HorizontalAlign.End },
           })
           .backgroundColor(0x65cafe)
@@ -199,7 +201,7 @@ struct CustomDialogExample {
           .align(Alignment.Center)
           .onClick(() => {
             this.idCount++;
-            this.arr.push(new Message(0,this.idCount, this.messageValue));
+            this.arr.push(new Message(0, this.idCount, this.messageValue));
             this.getAI(this.messageValue)
             //this.messageValue = "";
           })
@@ -276,11 +278,12 @@ struct CustomDialogUser {
         Image($r('app.media.assistant'))
           .width(40)
           .height(40)
-      }.backgroundColor(0xffffff)
+      }
+      .backgroundColor(0xffffff)
       .align(Alignment.Center)
       .width(50)
       .height(50)
-      .position({x: '80%', y:600,})
+      .position({ x: '80%', y: 600, })
       .onClick(() => {
         if (this.dialogController != undefined) {
           this.dialogController.open()
@@ -291,4 +294,4 @@ struct CustomDialogUser {
   }
 }
 
-export{ CustomDialogUser }
+export { CustomDialogUser }
