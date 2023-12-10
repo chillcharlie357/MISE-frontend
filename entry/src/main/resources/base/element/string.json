@@ -48,6 +48,34 @@
     {
       "name": "input_empty_tips",
       "value": "The input cannot be empty."
+    },
+    {
+      "name": "register",
+      "value": "register"
+    },
+    {
+      "name": "confirm_password",
+      "value": "confirm_password"
+    },
+    {
+      "name": "register_page",
+      "value": "register_page"
+    },
+    {
+      "name": "username",
+      "value": "username"
+    },
+    {
+      "name": "email",
+      "value": "email"
+    },
+    {
+      "name": "password_not_match",
+      "value": "password_not_match"
+    },
+    {
+      "name": "email_invalid",
+      "value": "email_invalid"
     }
   ]
 }

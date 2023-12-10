@@ -98,9 +98,9 @@ struct LoginPage {
         .fontColor($r("app.color.loginPage_login_more_text_color"))
         .margin({ bottom: $r('app.float.login_more_margin_bottom'), top: $r('app.float.login_more_margin_top') })
 
-      TextInput({ placeholder: $r('app.string.account') })
+      TextInput({ placeholder: $r('app.string.email') })
         .maxLength(CommonConstants.INPUT_ACCOUNT_LENGTH)
-        .type(InputType.Number)
+        .type(InputType.Email)
         .inputStyle()
         .onChange((value: string) => {
           this.email = value;

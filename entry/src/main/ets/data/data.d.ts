@@ -39,3 +39,15 @@ export interface SaTokenInfo {
   [property: string]: any;
 }
 
+export type RegisterRequest = {
+  email: string
+  password: string
+  username: string
+}
+
+export type RegisterResponse = {
+  msg: string;
+
+  [property: string]: any;
+}
+
