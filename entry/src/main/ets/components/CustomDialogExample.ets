@@ -1,8 +1,11 @@
+import http from '@ohos.net.http';
 class Message {
+  rule: number;             //新增身份0是用户，1是ai。方便渲染
   id: number;
   value: string;
 
-  constructor(id: number, value: string) {
+  constructor(rule: number,id: number, value: string) {
+    this.rule=rule;
     this.id = id;
     this.value = value;
   }
@@ -15,6 +18,7 @@ struct CustomDialogExample {
   @Link inputValue: string
   @State submitValue: string = ''
   @State arr: Array<Message> = []
+  //@State ans: Array<Message> = []
   controller: CustomDialogController
   cancel: () => void
   confirm: () => void
@@ -22,6 +26,58 @@ struct CustomDialogExample {
   private idCount: number = 0;
   private messageValue: string;
 
+
+  getAI(value:string){
+    let httpRequest = http.createHttp();
+    httpRequest.request(
+      // 填写http请求的url地址，可以带参数也可以不带参数。URL地址需要开发者自定义。请求的参数可以在extraData中指定
+      "http://10.58.0.2:6678/v1/chat/completions",
+      {
+        method: http.RequestMethod.POST, // 可选，默认为http.RequestMethod.GET
+        // 开发者根据自身业务需要添加header字段
+        header: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer some_key'
+        },
+        // 当使用POST请求时此字段用于传递内容
+        extraData: {
+          "model": "xxx",
+          "max_tokens": 2048,
+          "top_p": 1,
+          "temperature": 1,
+          "messages": [
+            {
+              "role": "system",
+              "content": value
+            },
+            {
+              "role": "user",
+              "content": "Hello!"
+            }
+          ]
+        },
+        connectTimeout: 60000, // 可选，默认为60s
+        readTimeout: 60000, // 可选，默认为60s
+      }, (err, data) => {
+      if (!err) {
+        if (typeof data.result == 'string'){
+          let jsonString : string = data.result;
+          let jsonObject = JSON.parse(jsonString);
+          if(jsonObject.choices[0].message.content!=null){
+            this.arr.push(new Message(1,this.idCount++,jsonObject.choices[0].message.content));
+          }
+
+        }
+        // console.info(data.responseCode.toString());
+        // if(data.responseCode==200){
+        //   const response = JSON.parse(data.result.toString());
+        //   console.info(response);
+        // }
+
+      }
+    }
+    );
+  }
 
   build() {
     Column() {
@@ -59,24 +115,46 @@ struct CustomDialogExample {
       Scroll(this.scroller){
         Column() {
           ForEach(this.arr, (item: Message) => {
+            if(item.rule==0){
+              Row(){
+                //Text(item.id.toString())
+                Text(item.value)
+                  .backgroundColor(0xffffff)
+                  .textAlign(TextAlign.Start)
+                  .borderRadius(8)
+                  .borderWidth(8)
+                  .borderColor(0xffffff)
+                  .margin({right: 5, left: 5})
+                  .textOverflow({overflow:TextOverflow.None})
+                Image($r("app.media.user"))
+                  .width(35)
+                  .height(35)
+              }
+              .width("90%")
+              .justifyContent(FlexAlign.End)
+              .margin({top : 8, bottom: 8})
+            }
+          else {
             Row(){
-              //Text(item.id.toString())
-              Text(item.value)
+              Image($r("app.media.user"))
+                .width(35)
                 .height(35)
+              Text(item.value)
                 .backgroundColor(0xffffff)
-                .textAlign(TextAlign.Center)
+                .textAlign(TextAlign.Start)
                 .borderRadius(8)
                 .borderWidth(8)
                 .borderColor(0xffffff)
                 .margin({right: 5, left: 5})
-              Image($r("app.media.user"))
-                .width(35)
-                .height(35)
-            }.height(35)
-            .width("100%")
-            .justifyContent(FlexAlign.End)
+                .textOverflow({overflow:TextOverflow.None})
+            }
+            .width("90%")
+            .justifyContent(FlexAlign.Start)
             .margin({top : 8, bottom: 8})
+          }
           }, (item: Message) => item.value)
+
+
         }.width('100%')
       }.width("100%")
       .height(550)
@@ -98,10 +176,13 @@ struct CustomDialogExample {
             .onChange((value: string)=>{
               this.messageValue = value;
             })
-            .onSubmit((EnterKeyType)=>{
+            .onSubmit(()=>{
               this.idCount++;
-              this.arr.push(new Message(this.idCount, this.messageValue));
-              this.messageValue = "";
+              this.arr.push(new Message(0,this.idCount, this.messageValue));
+              //console.info(this.idCount+this.messageValue)
+              this.getAI(this.messageValue)
+              //this.messageValue = "";
+
             })
 
           Button({ type: ButtonType.Normal, stateEffect: true }) {
@@ -118,7 +199,8 @@ struct CustomDialogExample {
           .align(Alignment.Center)
           .onClick(() => {
             this.idCount++;
-            this.arr.push(new Message(this.idCount, this.messageValue));
+            this.arr.push(new Message(0,this.idCount, this.messageValue));
+            this.getAI(this.messageValue)
             //this.messageValue = "";
           })
           .id("button2")
