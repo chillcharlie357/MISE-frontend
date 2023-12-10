@@ -1,9 +1,9 @@
 import router from '@ohos.router';
-import { Content } from '../data/PostContent';
+import { PostData } from '../data/data';
 
 @Component
 struct PostCard {
-  content: Content;
+  content: PostData = null;
 
   build() {
     Column() {
@@ -18,9 +18,6 @@ struct PostCard {
           Text(this.content.title)
             .fontSize(30)
             .fontWeight(FontWeight.Medium)
-          Text(this.content.description)
-            .fontSize(12)
-            .fontWeight(FontWeight.Regular)
         }
         .padding(20)
         .margin({ left: 10 })
@@ -28,7 +25,7 @@ struct PostCard {
       }
       .padding(2)
 
-      Text(this.content.context)
+      Text(this.content.content)
         .fontSize(16)
         .fontWeight(FontWeight.Regular)
         .margin({ left: 20 })
@@ -76,14 +73,13 @@ struct PostCard {
 @Component
 struct CardPre {
   filledArray: Array<string> = Array(5).fill("https://dummyimage.com/20/09f/fff.png");
-  item: Content = new Content(
-    1,
-    "https://dummyimage.com/20/09f/fff.png",
-    `title`,
-    `content`,
-    `description`,
-    this.filledArray
-  );
+  item: PostData = {
+    id: 1,
+    title: "title",
+    content: "content",
+    avatar: "https://dummyimage.com/20/09f/fff.png",
+    images: this.filledArray
+  }
 
   build() {
     Column() {

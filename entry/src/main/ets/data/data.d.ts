@@ -51,3 +51,17 @@ export type RegisterResponse = {
   [property: string]: any;
 }
 
+
+export type PostResponse = Array<PostData>;
+
+
+export type PostData = {
+  id: number;
+  avatar: string;
+  title: string;
+  content: string;
+  images: Array<string>;
+}
+
+
+export type PostDataGetter = () => Promise<PostResponse> | null;

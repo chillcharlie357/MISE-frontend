@@ -27,7 +27,7 @@ struct ProfileScreen {
     if (this.login_state) {
       axios.get<UserProfileResponse>('/user/info')
         .then((res) => {
-          console.log("Data: " + JSON.stringify(res.data))
+          console.log("UserProfileResponse: " + JSON.stringify(res.data))
 
           this.username = res.data.username
           this.description = res.data.description

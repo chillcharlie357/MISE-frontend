@@ -1,40 +1,55 @@
 import { PostList } from '../../../components/PostList'
 import { PostDeny } from './PostDeny'
-import { Content } from '../../../data/PostContent'
 import { fakePostContentData } from '../../../utils/fakePostContent'
+import { PostDataGetter, PostData, PostResponse } from '../../../data/data'
+import axios from '../../../axios'
 
 @Component
 @Preview
 struct ProfileContent {
-  private contents: Content[] = fakePostContentData()
   @StorageLink('login_state') login_state: boolean = false
+  private getPostData: PostDataGetter = () => {
+    return axios.get<PostResponse>('/community/posts')
+      .then((response) => {
+        console.info('CommunityScreen response: ', JSON.stringify(response.data));
+        return response.data;
+      })
+      .catch((error) => {
+        console.error('CommunityScreen error: ', error);
+        return null;
+      });
+  }
 
   build() {
     Row() {
       Tabs({ barPosition: BarPosition.Start }) {
         TabContent() {
-          if(this.login_state)
-            PostList({ contents: this.contents })
-          else
+          if (this.login_state) {
+            PostList({ getPostData: this.getPostData })
+
+          } else {
             PostDeny()
 
-
+          }
         }
         .tabBar('作品')
 
         TabContent() {
-          if(this.login_state)
-            PostList({ contents: this.contents })
-          else
+          if (this.login_state) {
+            PostList({ getPostData: this.getPostData })
+
+          } else {
             PostDeny()
+          }
         }
         .tabBar('收藏')
 
         TabContent() {
-          if(this.login_state)
-            PostList({ contents: this.contents })
-          else
+          if (this.login_state) {
+            PostList({ getPostData: this.getPostData })
+          } else {
             PostDeny()
+          }
         }
         .tabBar('赞过')
       }

@@ -1,17 +1,25 @@
-import { Content } from '../data/PostContent';
+import { PostDataGetter, PostData } from '../data/data';
 import { PostCard } from './PostCard';
 
 @Component
 struct PostList {
-  contents: Content[];
+  @State contents: Array<PostData> = [];
+  private getPostData: PostDataGetter;
+
+  aboutToAppear() {
+    this.getPostData().then((data: Array<PostData>) => {
+      this.contents = data;
+    })
+    console.info('PostList aboutToAppear: ', JSON.stringify(this.contents))
+  }
 
   build() {
     List() {
-      ForEach(this.contents, (item: Content) => {
+      ForEach(this.contents, (item: PostData) => {
         ListItem() {
           PostCard({ content: item })
         }
-      }, content => content.id)
+      }, item => item.id)
     }
     .width('100%')
     .height('100%')
