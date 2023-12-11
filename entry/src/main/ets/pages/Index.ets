@@ -5,7 +5,7 @@ import { ProfileScreen } from './Profile/ProfileScreen';
 @Entry
 @Component
 @Preview
-struct Index {
+struct Index   {
   @State currentIndex: number = 0;
   private arr: number[] = [1, 2, 3];
 
