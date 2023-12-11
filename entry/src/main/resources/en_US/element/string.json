@@ -15,7 +15,7 @@
 
     {
       "name": "login_page",
-      "value": "Login page"
+      "value": "Login"
     },
     {
       "name": "login_more",
@@ -48,6 +48,34 @@
     {
       "name": "input_empty_tips",
       "value": "The input cannot be empty."
+    },
+    {
+      "name": "register",
+      "value": "Register"
+    },
+    {
+      "name": "confirm_password",
+      "value": "Confirm password"
+    },
+    {
+      "name": "register_page",
+      "value": "Register"
+    },
+    {
+      "name": "username",
+      "value": "Username"
+    },
+    {
+      "name": "email",
+      "value": "Email"
+    },
+    {
+      "name": "password_not_match",
+      "value": "Password not match"
+    },
+    {
+      "name": "email_invalid",
+      "value": "Email invalid"
     }
   ]
 }

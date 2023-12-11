@@ -1,8 +1,9 @@
-import { Content } from '../CommunityScreen'
+import router from '@ohos.router';
+import { PostData } from '../data/data';
 
 @Component
 struct PostCard {
-  content: Content;
+  @State content: PostData = null;
 
   build() {
     Column() {
@@ -11,31 +12,33 @@ struct PostCard {
           .objectFit(ImageFit.Cover)
           .width(70)
           .height(70)
-          .margin({left:10})
+          .margin({ left: 10 })
 
         Column() {
           Text(this.content.title)
-            .fontSize(30)
+            .fontSize(20)
             .fontWeight(FontWeight.Medium)
-          Text(this.content.description)
-            .fontSize(12)
-            .fontWeight(FontWeight.Regular)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .maxLines(1)
+            .width('80%')
         }
-        .padding(20)
-        .margin({left:10})
+        .margin({ left: 10 })
 
       }
       .padding(2)
 
-      Text(this.content.context)
+      Text(this.content.content)
         .fontSize(16)
         .fontWeight(FontWeight.Regular)
-        .margin({left:20})
-
+        .margin({ left: 20, top: 10 })
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .maxLines(2)
 
       Grid() {
-        ForEach(this.content.images, (item: Resource) => {
+        ForEach(this.content.images, (item: Resource, index: number) => {
+
           GridItem() {
+
             Image(item)
               .objectFit(ImageFit.Cover)
               .width(60)
@@ -47,7 +50,9 @@ struct PostCard {
       }
       .margin(10)
       .maxCount(4)
+
       Blank()
+
     }
     .alignItems(HorizontalAlign.Start)
     .width('95%')
@@ -55,21 +60,29 @@ struct PostCard {
     .borderRadius(12)
     .margin(10)
     .shadow({ radius: 10, color: Color.Gray, offsetX: 5, offsetY: 10 })
+    .onClick(() => {
+      console.log(`click: ${this.content.id}`)
+      router.pushUrl({
+        url: "pages/Community/PostDetail",
+        params: {
+          ...this.content
+        }
+      })
+    })
   }
 }
 
 @Preview
 @Component
 struct CardPre {
-  filledArray: Array<Resource> = Array(4).fill($r('app.media.icon'));
-  item: Content = new Content(
-    1,
-    $r('app.media.icon'),
-    `title`,
-    `content`,
-    `description`,
-    this.filledArray
-  );
+  filledArray: Array<string> = Array(5).fill("https://dummyimage.com/20/09f/fff.png");
+  item: PostData = {
+    id: 1,
+    title: "title",
+    content: "content",
+    avatar: "https://dummyimage.com/20/09f/fff.png",
+    images: this.filledArray
+  }
 
   build() {
     Column() {

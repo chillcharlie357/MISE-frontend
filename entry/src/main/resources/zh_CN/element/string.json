@@ -14,7 +14,7 @@
     },
     {
       "name": "login_page",
-      "value": "登录界面"
+      "value": "登录"
     },
     {
       "name": "login_more",
@@ -47,7 +47,35 @@
     {
       "name": "input_empty_tips",
       "value": "输入不能为空"
-    }
+    },
 
+    {
+      "name": "register",
+      "value": "注册"
+    },
+    {
+      "name": "confirm_password",
+      "value": "确认密码"
+    },
+    {
+      "name": "register_page",
+      "value": "注册"
+    },
+    {
+      "name": "username",
+      "value": "用户名"
+    },
+    {
+      "name": "email",
+      "value": "邮箱"
+    },
+    {
+      "name": "password_not_match",
+      "value": "密码与确认密码不匹配"
+    },
+    {
+      "name": "email_invalid",
+      "value": "邮箱无效或已存在"
+    }
   ]
 }

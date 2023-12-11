@@ -5,6 +5,7 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
+
           "certpath": "C:\\Users\\windows\\.ohos\\config\\auto_debug_MISE-Project_com.example.myapplication1969_70086000155722857.cer",
           "storePassword": "0000001B9E964C37EA9274702007AF245ECB178B611CF2EE08ED33209F2A5FFD2F58D417602EF2E71B490E",
           "keyAlias": "debugKey",
@@ -12,6 +13,7 @@
           "profile": "C:\\Users\\windows\\.ohos\\config\\auto_debug_MISE-Project_com.example.myapplication1969_70086000155722857.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "C:\\Users\\windows\\.ohos\\config\\auto_debug_MISE-Project_com.example.myapplication1969_70086000155722857.p12"
+
         }
       }
     ],

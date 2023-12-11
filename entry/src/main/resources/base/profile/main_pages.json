@@ -4,6 +4,8 @@
     "pages/Community/CommunityScreen",
     "pages/DrawingPanel/DrawingPanelScreen",
     "pages/Profile/ProfileScreen",
-    "pages/Profile/LoginPage"
+    "pages/Profile/LoginPage",
+    "pages/Community/PostDetail",
+    "pages/Profile/RegisterScreen"
   ]
 }
