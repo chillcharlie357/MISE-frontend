@@ -1,10 +1,11 @@
 // 单个评论
-import { Icon } from "../../../components/Icon"
 import { CommentData } from '../../../data/data'
+import axios from '../../../axios'
 
 @Component
 struct CommentBlock {
-  @State isLiked: Boolean = false
+  @State isLiked: boolean = false
+  @State postId: number = 0
   @State commentInfo: CommentData = {
     id: 1,
     avatar: "https://dummyimage.com/300/09f.png/fff",
@@ -13,13 +14,22 @@ struct CommentBlock {
     likes: 0
   }
   onLikeClick: () => void = () => {
-    console.info("like click", this.isLiked)
+    let op: string = ""
     if (this.isLiked === true) {
       this.commentInfo.likes--
+      op = "unlike"
     } else {
       this.commentInfo.likes++
+      op = "like"
     }
     this.isLiked = !this.isLiked;
+
+    axios.post(`/community/comments/${this.postId}/${this.commentInfo.id}/${op}`)
+      .then((res) => {
+        console.info("like pressed", JSON.stringify(res.data))
+      }).catch((err) => {
+      console.error("like pressed", JSON.stringify(err))
+    })
   }
 
   aboutToAppear() {

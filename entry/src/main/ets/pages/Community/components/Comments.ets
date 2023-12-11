@@ -3,7 +3,8 @@ import { CommentBlock } from './CommentBlock'
 
 @Component
 struct Comments {
-  @State avatar: string = "https://dummyimage.com/300/09f.png/fff"
+  postId: number = 0
+  avatar: string = "https://dummyimage.com/300/09f.png/fff"
   @State commentsList: CommentData[] = []
   private getCommentsData: CommentDataGetter
 
@@ -37,7 +38,10 @@ struct Comments {
       List({ space: 8 }) {
         ForEach(this.commentsList, (item: CommentData) => {
           ListItem() {
-            CommentBlock({ commentInfo: item})
+            CommentBlock({
+              commentInfo: item,
+              postId: this.postId
+            })
           }
         }, (item: CommentData) => item.id.toString())
       }

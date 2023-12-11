@@ -6,10 +6,10 @@ import axios from '../../axios'
 @Entry
 @Component
 struct PostDetail {
-  @State title: string = router.getParams()['title']
-  @State content: string = router.getParams()['content']
-  @State postId: number = router.getParams()['id']
-  @State images: string[] = router.getParams()['images']
+  title: string = router.getParams()['title']
+  content: string = router.getParams()['content']
+  images: string[] = router.getParams()['images']
+  postId: number = router.getParams()['id']
   private getComments: CommentDataGetter = () => {
     return axios.get<CommentResponse>(`/community/comments/${this.postId}`)
       .then((res) => {
@@ -48,7 +48,10 @@ struct PostDetail {
           .padding({ top: 10 })
 
 
-        Comments({ getCommentsData: this.getComments })
+        Comments({
+          getCommentsData: this.getComments,
+          postId: this.postId
+        })
           .padding({ top: 10 })
           .flexShrink(3)
 
