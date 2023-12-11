@@ -4,20 +4,13 @@ import { Comments } from './components/Comments';
 @Entry
 @Component
 struct PostDetail {
-  private title: string = "Hello World"
-  private content: string = "Hello World"
-  private postId: number = 0
-  private images: string[] = [
-    "https://dummyimage.com/20/09f/fff.png",
-    "https://dummyimage.com/20/ff0/fff.png",
-    "https://dummyimage.com/200x300&text=dummyimage.com+rocks!",
-    "https://dummyimage.com/640x4:3/",
-    "https://dummyimage.com/300/09f.png/fff"
-  ]
+  @State title: string = router.getParams()['title']
+  @State content: string = router.getParams()['content']
+  @State postId: number = router.getParams()['id']
+  @State images: string[] = router.getParams()['images']
 
-  onPageShow() {
-    const params = router.getParams();
-    this.postId = params['id'];
+  aboutToAppear() {
+    console.info("PostDetail: ", JSON.stringify(this.images))
   }
 
   build() {

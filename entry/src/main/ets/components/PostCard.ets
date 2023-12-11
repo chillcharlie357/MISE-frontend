@@ -3,7 +3,7 @@ import { PostData } from '../data/data';
 
 @Component
 struct PostCard {
-  content: PostData = null;
+  @State content: PostData = null;
 
   build() {
     Column() {
@@ -62,7 +62,7 @@ struct PostCard {
       router.pushUrl({
         url: "pages/Community/PostDetail",
         params: {
-          id: this.content.id
+          ...this.content
         }
       })
     })
