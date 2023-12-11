@@ -23,7 +23,7 @@ struct PostList {
     }
     .width('100%')
     .height('100%')
-    .scrollBar(BarState.Auto)
+    .scrollBar(BarState.On)
     .zIndex(50)
   }
 }

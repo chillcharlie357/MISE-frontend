@@ -1,59 +1,70 @@
 // 单个评论
 import { Icon } from "../../../components/Icon"
+import { CommentData } from '../../../data/data'
 
 @Component
 struct CommentBlock {
+  @State isLiked: Boolean = false
+  @State commentInfo: CommentData = {
+    id: 1,
+    avatar: "https://dummyimage.com/300/09f.png/fff",
+    username: "用户名",
+    content: "评论内容",
+    likes: 0
+  }
+  onLikeClick: () => void = () => {
+    console.info("like click", this.isLiked)
+    if (this.isLiked === true) {
+      this.commentInfo.likes--
+    } else {
+      this.commentInfo.likes++
+    }
+    this.isLiked = !this.isLiked;
+  }
 
-  @State private avatar: string = "https://dummyimage.com/300/09f.png/fff"
-  private username: string = "用户名"
-  private content: string = "评论内容"
-  @State private likes: number = 0
-  private isLiked: Boolean = false
-  @State private likeURL: string = 'pages/Community/icon/ic_public_favor.svg'
-
+  aboutToAppear() {
+  }
 
   build() {
     Row() {
       Row({ space: 10 }) {
-        Image(this.avatar)
+        Image(this.commentInfo.avatar)
           .width(40)
           .height(40)
           .borderRadius(20)
           .backgroundColor("#eee")
 
         Column({ space: 10 }) {
-          Text(this.username)
+          Text(this.commentInfo.username)
             .fontSize(16)
             .fontWeight("bold")
-          Text(this.content)
+          Text(this.commentInfo.content)
             .fontSize(14)
         }
+        .alignItems(HorizontalAlign.Start)
+        .width("90%")
       }.layoutWeight(3)
+      .margin({ left: 10 })
 
       Row() {
         Button({ type: ButtonType.Circle, stateEffect: true }) {
-          Image(this.likeURL).width(30).height(30)
+          if (this.isLiked === true) {
+            Image('pages/Community/icon/ic_public_favor_filled.svg')
+              .width(30)
+              .height(30)
+          } else {
+            Image('pages/Community/icon/ic_public_favor.svg')
+              .width(30)
+              .height(30)
+          }
         }
         .margin({ left: 20 })
         .backgroundColor(Color.White)
-        .onClick(() => {
-          if(this.isLiked==false){
-            console.info(this.likes.toString())
-            this.isLiked=true
-            this.likes++
-            this.likeURL='pages/Community/icon/ic_public_favor_filled.svg'
-          }else{
-            this.isLiked=false
-            this.likes--
-            this.likeURL='pages/Community/icon/ic_public_favor.svg'
-          }
-         // console.log("点赞")
+        .onClick(this.onLikeClick)
 
-        })
-
-        Text(this.likes.toString())
+        Text(this.commentInfo.likes.toString())
           .fontSize(14)
-          .margin({left: 10})
+          .margin({ left: 10 })
       }
       .layoutWeight(1)
 

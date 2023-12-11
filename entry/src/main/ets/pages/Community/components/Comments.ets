@@ -1,12 +1,24 @@
+import { CommentData, CommentDataGetter, CommentResponse } from '../../../data/data'
 import { CommentBlock } from './CommentBlock'
 
 @Component
 struct Comments {
   @State avatar: string = "https://dummyimage.com/300/09f.png/fff"
-  @State commentsList: number[] = Array.from({ length: 10 }, (_, k) => k + 1)
+  @State commentsList: CommentData[] = []
+  private getCommentsData: CommentDataGetter
+
+  aboutToAppear() {
+    this.getCommentsData().then((res: CommentResponse) => {
+      console.info("Comments: ", JSON.stringify(res));
+      this.commentsList = res.comments;
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
 
   build() {
     Column() {
+      // 评论输入
       Row() {
         Image(this.avatar)
           .width(40)
@@ -21,12 +33,13 @@ struct Comments {
           .border({ width: 1, color: '#ccc' })
       }
 
+      // 评论区展示
       List({ space: 8 }) {
-        ForEach(this.commentsList, (item) => {
+        ForEach(this.commentsList, (item: CommentData) => {
           ListItem() {
-            CommentBlock({ content: item.toString() })
+            CommentBlock({ commentInfo: item})
           }
-        }, (item) => item.toString())
+        }, (item: CommentData) => item.id.toString())
       }
       .scrollBar(BarState.Off)
       .divider({

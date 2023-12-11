@@ -65,3 +65,17 @@ export type PostData = {
 
 
 export type PostDataGetter = () => Promise<PostResponse> | null;
+
+export type CommentData = {
+  id: number;
+  avatar: string;
+  username: string;
+  content: string;
+  likes: number;
+}
+
+export type CommentResponse = {
+  comments: Array<CommentData>
+}
+
+export type CommentDataGetter = () => Promise<CommentResponse> | null;

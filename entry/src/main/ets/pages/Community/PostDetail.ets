@@ -1,5 +1,7 @@
 import router from '@ohos.router';
+import { CommentDataGetter, CommentResponse } from '../../data/data';
 import { Comments } from './components/Comments';
+import axios from '../../axios'
 
 @Entry
 @Component
@@ -8,6 +10,17 @@ struct PostDetail {
   @State content: string = router.getParams()['content']
   @State postId: number = router.getParams()['id']
   @State images: string[] = router.getParams()['images']
+  private getComments: CommentDataGetter = () => {
+    return axios.get<CommentResponse>(`/community/comments/${this.postId}`)
+      .then((res) => {
+        console.info("Post Detail: ", JSON.stringify(res.data))
+        return res.data;
+      })
+      .catch((err) => {
+        console.error(err)
+        return null;
+      })
+  }
 
   aboutToAppear() {
     console.info("PostDetail: ", JSON.stringify(this.images))
@@ -35,7 +48,7 @@ struct PostDetail {
           .padding({ top: 10 })
 
 
-        Comments()
+        Comments({ getCommentsData: this.getComments })
           .padding({ top: 10 })
           .flexShrink(3)
 
