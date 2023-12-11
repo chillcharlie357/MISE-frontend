@@ -33,9 +33,9 @@ struct PostDetail {
         Swiper() {
           ForEach(this.images, (item: string) => {
             Image(item)
-              .width("90%")
-              .width(400)
+              .alignSelf(ItemAlign.Center)
               .objectFit(ImageFit.Cover)
+              .padding({ left: 2, right: 2 })
           })
         }
 
