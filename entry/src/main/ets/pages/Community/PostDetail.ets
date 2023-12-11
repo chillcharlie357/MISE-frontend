@@ -14,30 +14,34 @@ struct PostDetail {
   }
 
   build() {
-    Flex({ direction: FlexDirection.Column }) {
+    Scroll() {
+      Flex({ direction: FlexDirection.Column }) {
 
-      Swiper() {
-        ForEach(this.images, (item: string) => {
-          Image(item)
-            .width("90%")
-            .width(400)
-            .objectFit(ImageFit.Cover)
+        Swiper() {
+          ForEach(this.images, (item: string) => {
+            Image(item)
+              .width("90%")
+              .width(400)
+              .objectFit(ImageFit.Cover)
+          })
+        }
+
+        PostContent({
+          title: this.title,
+          content: this.content
         })
+          .width('95%')
+          .margin(10)
+          .padding({ top: 10 })
+
+
+        Comments()
+          .padding({ top: 10 })
+          .flexShrink(3)
+
       }
-
-      PostContent({
-        title: this.title,
-        content: this.content
-      })
-        .width('95%')
-        .margin(10)
-        .padding({ top: 10 })
-
-      Comments()
-        .padding({ top: 10 })
-        .flexShrink(3)
-
     }
+    .scrollable(ScrollDirection.Vertical)
     .width('100%')
     .height('100%')
   }

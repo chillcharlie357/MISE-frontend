@@ -16,10 +16,12 @@ struct PostCard {
 
         Column() {
           Text(this.content.title)
-            .fontSize(30)
+            .fontSize(20)
             .fontWeight(FontWeight.Medium)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .maxLines(1)
+            .width('80%')
         }
-        .padding(20)
         .margin({ left: 10 })
 
       }
@@ -28,8 +30,9 @@ struct PostCard {
       Text(this.content.content)
         .fontSize(16)
         .fontWeight(FontWeight.Regular)
-        .margin({ left: 20 })
-
+        .margin({ left: 20, top: 10 })
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .maxLines(2)
 
       Grid() {
         ForEach(this.content.images, (item: Resource, index: number) => {

@@ -2,8 +2,8 @@ import { CommentBlock } from './CommentBlock'
 
 @Component
 struct Comments {
-  private avatar: string = "https://dummyimage.com/300/09f.png/fff"
-  private commentsList: number[] = Array.from({ length: 10 }, (v, k) => k + 1)
+  @State avatar: string = "https://dummyimage.com/300/09f.png/fff"
+  @State commentsList: number[] = Array.from({ length: 10 }, (_, k) => k + 1)
 
   build() {
     Column() {
@@ -24,11 +24,11 @@ struct Comments {
       List({ space: 8 }) {
         ForEach(this.commentsList, (item) => {
           ListItem() {
-            CommentBlock({content: item.toString()})
+            CommentBlock({ content: item.toString() })
           }
         }, (item) => item.toString())
       }
-      .scrollBar(BarState.Auto)
+      .scrollBar(BarState.Off)
       .divider({
         strokeWidth: 1,
         startMargin: 60,
