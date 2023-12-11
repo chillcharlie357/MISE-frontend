@@ -5,13 +5,14 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "C:\\Users\\Lenovo\\.ohos\\config\\auto_debug_MISE_Project_com.example.myapplication_2850086000491483780.cer",
-          "storePassword": "0000001BFE930D670C098D86B49FF2E6101786F1578EA569FD9585455CF555709923522DFE3EEFBE6FB0B9",
+          "certpath": "C:\\Users\\windows\\.ohos\\config\\auto_debug_MISE-Project_com.example.myapplication1969_70086000155722857.cer",
+          "storePassword": "0000001B9E964C37EA9274702007AF245ECB178B611CF2EE08ED33209F2A5FFD2F58D417602EF2E71B490E",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001B3F4B49F235661A736085F2666BB00BD11456DE4A3DA9F1D14A676E93A62B189985BF8B62B26476",
-          "profile": "C:\\Users\\Lenovo\\.ohos\\config\\auto_debug_MISE_Project_com.example.myapplication_2850086000491483780.p7b",
+          "keyPassword": "0000001B987A0207AEAA3402160B568C486059A11879D58DAF29A8215216C8FE40FE6572FCE9EF8FC6A924",
+          "profile": "C:\\Users\\windows\\.ohos\\config\\auto_debug_MISE-Project_com.example.myapplication1969_70086000155722857.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\Lenovo\\.ohos\\config\\auto_debug_MISE_Project_com.example.myapplication_2850086000491483780.p12"
+          "storeFile": "C:\\Users\\windows\\.ohos\\config\\auto_debug_MISE-Project_com.example.myapplication1969_70086000155722857.p12"
+
         }
       }
     ],

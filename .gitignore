@@ -10,3 +10,4 @@
 /.clang-tidy
 **/.test
 /key
+build-profile.json5
