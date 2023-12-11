@@ -1,29 +1,21 @@
 import router from '@ohos.router';
-import { CommentDataGetter, CommentResponse } from '../../data/data';
+import { CommentData, CommentDataGetter, CommentResponse } from '../../data/data';
 import { Comments } from './components/Comments';
 import axios from '../../axios'
 
-@Entry
+let storage = new LocalStorage({ 'postId': 10 });
+
+@Entry(storage)
 @Component
 struct PostDetail {
   title: string = router.getParams()['title']
   content: string = router.getParams()['content']
   images: string[] = router.getParams()['images']
   postId: number = router.getParams()['id']
-  private getComments: CommentDataGetter = () => {
-    return axios.get<CommentResponse>(`/community/comments/${this.postId}`)
-      .then((res) => {
-        console.info("Post Detail: ", JSON.stringify(res.data))
-        return res.data;
-      })
-      .catch((err) => {
-        console.error(err)
-        return null;
-      })
-  }
 
   aboutToAppear() {
-    console.info("PostDetail: ", JSON.stringify(this.images))
+    console.info("PostDetail postId: ", this.postId)
+    storage.set('postId', this.postId)
   }
 
   build() {
@@ -48,10 +40,7 @@ struct PostDetail {
           .padding({ top: 10 })
 
 
-        Comments({
-          getCommentsData: this.getComments,
-          postId: this.postId
-        })
+        Comments()
           .padding({ top: 10 })
           .flexShrink(3)
 

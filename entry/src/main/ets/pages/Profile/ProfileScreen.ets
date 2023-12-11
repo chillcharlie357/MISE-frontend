@@ -35,6 +35,8 @@ struct ProfileScreen {
           this.followers = res.data.followers
           this.following = res.data.following
           this.uid = '' + res.data.id
+          AppStorage.SetOrCreate('username',res.data.username)
+          AppStorage.SetOrCreate('userAvatar',res.data.avatarUrl)
         })
         .catch((err) => {
           console.error(err);

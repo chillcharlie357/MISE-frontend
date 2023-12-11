@@ -1,15 +1,31 @@
 import { CommentData, CommentDataGetter, CommentResponse } from '../../../data/data'
 import { CommentBlock } from './CommentBlock'
+import axios from '../../../axios'
 
 @Component
 struct Comments {
-  postId: number = 0
-  avatar: string = "https://dummyimage.com/300/09f.png/fff"
+  @LocalStorageProp('postId') postId: number = 0
+  @StorageProp('userAvatar') avatar: string = "https://dummyimage.com/300/09f.png/fff"
+  @StorageProp('username') username: string = ''
   @State commentsList: CommentData[] = []
-  private getCommentsData: CommentDataGetter
+  @State commentValue: string = ''
+  private getComments: CommentDataGetter = () => {
+    return axios.get<CommentResponse>(`/community/comments/${this.postId}`)
+      .then((res) => {
+        console.info("Post Detail: ", JSON.stringify(res.data))
+        return res.data;
+      })
+      .catch((err) => {
+        console.error(err);
+        return null;
+      })
+  }
+  private postComment = (comment: CommentData) => {
+    return axios.post<CommentData>(`/community/comment/${this.postId}`, comment)
+  }
 
   aboutToAppear() {
-    this.getCommentsData().then((res: CommentResponse) => {
+    this.getComments().then((res: CommentResponse) => {
       console.info("Comments: ", JSON.stringify(res));
       this.commentsList = res.comments;
     }).catch((err) => {
@@ -26,12 +42,20 @@ struct Comments {
           .height(40)
           .borderRadius(20)
           .margin({ right: 10 })
-        TextArea({ placeholder: 'Write a comment...' })
+        TextInput({ placeholder: 'Write a comment...' })
           .width('80%')
           .height(40)
           .borderRadius(20)
           .padding({ left: 10 })
           .border({ width: 1, color: '#ccc' })
+          .enterKeyType(EnterKeyType.Send)
+          .onChange((value: string) => {
+            this.commentValue = value;
+          })
+          .onSubmit(() => {
+
+          })
+
       }
 
       // 评论区展示
@@ -40,7 +64,6 @@ struct Comments {
           ListItem() {
             CommentBlock({
               commentInfo: item,
-              postId: this.postId
             })
           }
         }, (item: CommentData) => item.id.toString())

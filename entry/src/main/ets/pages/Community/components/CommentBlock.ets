@@ -5,7 +5,7 @@ import axios from '../../../axios'
 @Component
 struct CommentBlock {
   @State isLiked: boolean = false
-  @State postId: number = 0
+  @LocalStorageProp('postId') postId: number = 0
   @State commentInfo: CommentData = {
     id: 1,
     avatar: "https://dummyimage.com/300/09f.png/fff",
@@ -14,6 +14,7 @@ struct CommentBlock {
     likes: 0
   }
   onLikeClick: () => void = () => {
+    console.info('Comments postId: ' + this.postId)
     let op: string = ""
     if (this.isLiked === true) {
       this.commentInfo.likes--
