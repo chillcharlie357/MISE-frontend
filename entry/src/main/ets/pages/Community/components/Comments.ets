@@ -1,12 +1,14 @@
 import { CommentData, CommentDataGetter, CommentResponse } from '../../../data/data'
 import { CommentBlock } from './CommentBlock'
 import axios from '../../../axios'
+import promptAction from '@ohos.promptAction';
 
 @Component
 struct Comments {
   @LocalStorageProp('postId') postId: number = 0
   @StorageProp('userAvatar') avatar: string = "https://dummyimage.com/300/09f.png/fff"
   @StorageProp('username') username: string = ''
+  @StorageProp('login_state') login_state: boolean = false
   @State commentsList: CommentData[] = []
   @State commentValue: string = ''
   private getComments: CommentDataGetter = () => {
@@ -42,7 +44,7 @@ struct Comments {
           .height(40)
           .borderRadius(20)
           .margin({ right: 10 })
-        TextInput({ placeholder: 'Write a comment...' })
+        TextInput({ placeholder: 'Write a comment...', text: this.commentValue })
           .width('80%')
           .height(40)
           .borderRadius(20)
@@ -51,9 +53,35 @@ struct Comments {
           .enterKeyType(EnterKeyType.Send)
           .onChange((value: string) => {
             this.commentValue = value;
+            if (this.login_state == false) {
+              promptAction.showToast({
+                message: "请先登录"
+              })
+              return
+            }
           })
           .onSubmit(() => {
-
+            if (this.login_state == false) {
+              promptAction.showToast({
+                message: "请先登录"
+              })
+              return
+            }
+            const newComment: CommentData = {
+              id: this.postId,
+              content: this.commentValue,
+              username: this.username,
+              avatar: this.avatar,
+              likes: 0
+            }
+            this.commentValue = ''
+            this.commentsList.push(newComment)
+            this.postComment(newComment)
+              .then((res) => {
+                console.info(JSON.stringify(res))
+              }).catch((err) => {
+              console.error(JSON.stringify(err))
+            })
           })
 
       }
