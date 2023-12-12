@@ -9,28 +9,21 @@ struct Comments {
   @StorageProp('userAvatar') avatar: string = "https://dummyimage.com/300/09f.png/fff"
   @StorageProp('username') username: string = ''
   @StorageProp('login_state') login_state: boolean = false
-  @State commentsList: CommentData[] = []
+  @State commentsList: Array<CommentData> = []
   @State commentValue: string = ''
-  private getComments: CommentDataGetter = () => {
+  private getComments = () => {
     return axios.get<CommentResponse>(`/community/comments/${this.postId}`)
-      .then((res) => {
-        console.info("Post Detail: ", JSON.stringify(res.data))
-        return res.data;
-      })
-      .catch((err) => {
-        console.error(err);
-        return null;
-      })
   }
   private postComment = (comment: CommentData) => {
-    return axios.post<CommentData>(`/community/comment/${this.postId}`, comment)
+    return axios.post(`/community/comment/${this.postId}`, comment)
   }
 
   aboutToAppear() {
-    this.getComments().then((res: CommentResponse) => {
-      console.info("Comments: ", JSON.stringify(res));
-      this.commentsList = res.comments;
-    }).catch((err) => {
+    this.getComments().then((res) => {
+        console.info("Comments: ", JSON.stringify(res.data));
+        this.commentsList = res.data;
+        console.log("CommentsList: ", this.commentsList)
+      }).catch((err) => {
       console.log(err);
     })
   }

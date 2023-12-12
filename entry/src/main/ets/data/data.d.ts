@@ -74,8 +74,7 @@ export type CommentData = {
   likes: number;
 }
 
-export type CommentResponse = {
-  comments: Array<CommentData>
-}
+export type CommentResponse = Array<CommentData>
+
 
 export type CommentDataGetter = () => Promise<CommentResponse> | null;
