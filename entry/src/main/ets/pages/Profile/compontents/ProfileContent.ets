@@ -24,32 +24,17 @@ struct ProfileContent {
     Row() {
       Tabs({ barPosition: BarPosition.Start }) {
         TabContent() {
-          if (this.login_state) {
-            PostList({ getPostData: this.getPostData })
-
-          } else {
-            PostDeny()
-
-          }
+          PostList({ getPostData: this.getPostData })
         }
         .tabBar('作品')
 
         TabContent() {
-          if (this.login_state) {
-            PostList({ getPostData: this.getPostData })
-
-          } else {
-            PostDeny()
-          }
+          PostList({ getPostData: this.getPostData })
         }
         .tabBar('收藏')
 
         TabContent() {
-          if (this.login_state) {
-            PostList({ getPostData: this.getPostData })
-          } else {
-            PostDeny()
-          }
+          PostList({ getPostData: this.getPostData })
         }
         .tabBar('赞过')
       }

@@ -8,6 +8,7 @@ import image from '@ohos.multimedia.image'
 import { ProfileContent } from './compontents/ProfileContent'
 import { Avatar } from './compontents/Avatar'
 import { BeforeLog } from './compontents/BeforeLog'
+import UnLoginPage from './UnLoginPage'
 
 @Entry
 @Component
@@ -55,9 +56,8 @@ struct ProfileScreen {
   }
 
   build() {
-    Column() {
-
-      if (this.login_state) {
+    if (this.login_state) {
+      Column() {
         Avatar({
           avatarUrl: this.avatarUrl,
           username: this.username,
@@ -65,16 +65,17 @@ struct ProfileScreen {
           uid: this.uid
         })
 
+        ProfileContent()
       }
-      else {
-        BeforeLog()
-      }
-
-      ProfileContent()
+      .height('100%')
+      .width('100%')
+      .backgroundColor($r('app.color.snow_grey'))
+    } else {
+      UnLoginPage()
+        .height('100%')
+        .width('100%')
     }
-    .height('100%')
-    .width('100%')
-    .backgroundColor($r('app.color.snow_grey'))
+
 
   }
 }

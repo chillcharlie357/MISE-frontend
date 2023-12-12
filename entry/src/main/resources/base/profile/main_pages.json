@@ -6,6 +6,7 @@
     "pages/Profile/ProfileScreen",
     "pages/Profile/LoginPage",
     "pages/Community/PostDetail",
-    "pages/Profile/RegisterScreen"
+    "pages/Profile/RegisterScreen",
+    "pages/Profile/UnLoginPage"
   ]
 }
