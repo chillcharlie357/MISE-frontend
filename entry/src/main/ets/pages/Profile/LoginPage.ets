@@ -48,16 +48,21 @@ struct LoginPage {
         .then((res) => {
           if (res.status === 200) {
             // login success
-            console.log(JSON.stringify(res.data))
+            AppStorage.SetAndProp('tokenName', res.data.saTokenInfo.tokenName);
+            AppStorage.SetAndProp('tokenValue', res.data.saTokenInfo.tokenValue);
+            console.log("LoginResponse: " ,JSON.stringify(res.data))
             this.login_state = true
             router.pushUrl({ url: 'pages/Index' })
           }
+          promptAction.showToast({
+            message: res.data.msg
+          })
         })
         .catch((error: any) => {
           promptAction.showToast({
-            message: "login failed"
+            message: error.response.data.msg
           })
-          console.log(error)
+          console.error(error)
         })
 
     }

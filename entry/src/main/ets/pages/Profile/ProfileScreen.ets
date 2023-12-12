@@ -24,8 +24,18 @@ struct ProfileScreen {
 
   aboutToAppear() {
     console.info("ProfileScreen appear")
+    const tokenName: string = AppStorage.Get("tokenName")
+    const tokenValue: string = AppStorage.Get("tokenValue")
+
+    console.log("token: ", JSON.stringify({
+      [tokenName]: tokenValue
+    }))
     if (this.login_state) {
-      axios.get<UserProfileResponse>('/user/info')
+      axios.get<UserProfileResponse>('/user/info', {
+        headers: {
+          [tokenName]: tokenValue
+        }
+      })
         .then((res) => {
           console.log("UserProfileResponse: " + JSON.stringify(res.data))
 
@@ -35,8 +45,8 @@ struct ProfileScreen {
           this.followers = res.data.followers
           this.following = res.data.following
           this.uid = '' + res.data.id
-          AppStorage.SetOrCreate('username',res.data.username)
-          AppStorage.SetOrCreate('userAvatar',res.data.avatarUrl)
+          AppStorage.SetOrCreate('username', res.data.username)
+          AppStorage.SetOrCreate('userAvatar', res.data.avatarUrl)
         })
         .catch((err) => {
           console.error(err);
