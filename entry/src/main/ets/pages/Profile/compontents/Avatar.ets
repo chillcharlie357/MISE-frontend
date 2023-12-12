@@ -37,6 +37,8 @@ struct Avatar {
             this.login_state = false
         })
 
+      AppStorage.SetAndProp('tokenName', '');
+      AppStorage.SetAndProp('tokenValue', '');
     }
     catch (error) {
       console.error(`showDialog args error code is ${error.code}, message is ${error.message}`);

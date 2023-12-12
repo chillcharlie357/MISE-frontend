@@ -1,18 +1,29 @@
 import { CommentData, CommentDataGetter, CommentResponse } from '../../../data/data'
 import { CommentBlock } from './CommentBlock'
+import axios from '../../../axios'
+import promptAction from '@ohos.promptAction';
 
 @Component
 struct Comments {
-  postId: number = 0
-  avatar: string = "https://dummyimage.com/300/09f.png/fff"
-  @State commentsList: CommentData[] = []
-  private getCommentsData: CommentDataGetter
+  @LocalStorageProp('postId') postId: number = 0
+  @StorageProp('userAvatar') avatar: string = "https://dummyimage.com/300/09f.png/fff"
+  @StorageProp('username') username: string = ''
+  @StorageProp('login_state') login_state: boolean = false
+  @State commentsList: Array<CommentData> = []
+  @State commentValue: string = ''
+  private getComments = () => {
+    return axios.get<CommentResponse>(`/community/comments/${this.postId}`)
+  }
+  private postComment = (comment: CommentData) => {
+    return axios.post(`/community/comment/${this.postId}`, comment)
+  }
 
   aboutToAppear() {
-    this.getCommentsData().then((res: CommentResponse) => {
-      console.info("Comments: ", JSON.stringify(res));
-      this.commentsList = res.comments;
-    }).catch((err) => {
+    this.getComments().then((res) => {
+        console.info("Comments: ", JSON.stringify(res.data));
+        this.commentsList = res.data;
+        console.log("CommentsList: ", this.commentsList)
+      }).catch((err) => {
       console.log(err);
     })
   }
@@ -26,12 +37,46 @@ struct Comments {
           .height(40)
           .borderRadius(20)
           .margin({ right: 10 })
-        TextArea({ placeholder: 'Write a comment...' })
+        TextInput({ placeholder: 'Write a comment...', text: this.commentValue })
           .width('80%')
           .height(40)
           .borderRadius(20)
           .padding({ left: 10 })
           .border({ width: 1, color: '#ccc' })
+          .enterKeyType(EnterKeyType.Send)
+          .onChange((value: string) => {
+            this.commentValue = value;
+            if (this.login_state == false) {
+              promptAction.showToast({
+                message: "请先登录"
+              })
+              return
+            }
+          })
+          .onSubmit(() => {
+            if (this.login_state == false) {
+              promptAction.showToast({
+                message: "请先登录"
+              })
+              return
+            }
+            const newComment: CommentData = {
+              id: this.postId,
+              content: this.commentValue,
+              username: this.username,
+              avatar: this.avatar,
+              likes: 0
+            }
+            this.commentValue = ''
+            this.commentsList.push(newComment)
+            this.postComment(newComment)
+              .then((res) => {
+                console.info(JSON.stringify(res))
+              }).catch((err) => {
+              console.error(JSON.stringify(err))
+            })
+          })
+
       }
 
       // 评论区展示
@@ -40,7 +85,6 @@ struct Comments {
           ListItem() {
             CommentBlock({
               commentInfo: item,
-              postId: this.postId
             })
           }
         }, (item: CommentData) => item.id.toString())
