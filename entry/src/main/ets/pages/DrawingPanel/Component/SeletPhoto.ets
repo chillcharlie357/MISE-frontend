@@ -7,6 +7,7 @@ async function example() {
     PhotoSelectOptions.maxSelectNumber = 5;
     let photoPicker = new picker.PhotoViewPicker();
     photoPicker.select(PhotoSelectOptions).then((PhotoSelectResult) => {
+
       console.log('PhotoViewPicker.select successfully, PhotoSelectResult uri: ' + JSON.stringify(PhotoSelectResult));
     }).catch((err) => {
       console.error('PhotoViewPicker.select failed with err: ' + err);

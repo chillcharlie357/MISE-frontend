@@ -1,4 +1,4 @@
-import { CardView } from '@isrc/easyui'
+
 import router from '@ohos.router';
 import promptAction from '@ohos.promptAction';
 @Component
