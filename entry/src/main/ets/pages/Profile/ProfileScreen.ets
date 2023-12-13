@@ -28,9 +28,6 @@ struct ProfileScreen {
     const tokenName: string = AppStorage.Get("tokenName")
     const tokenValue: string = AppStorage.Get("tokenValue")
 
-    console.log("token: ", JSON.stringify({
-      [tokenName]: tokenValue
-    }))
     if (this.login_state) {
       axios.get<UserProfileResponse>('/user/info', {
         headers: {
