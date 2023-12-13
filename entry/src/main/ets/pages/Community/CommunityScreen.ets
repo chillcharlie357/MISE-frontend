@@ -40,7 +40,7 @@ struct CommunityScreen {
 
     }
     .width('100%')
-    .backgroundColor("#afddf2")
+    .backgroundColor(Color.White)
   }
 }
 
