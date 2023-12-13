@@ -11,7 +11,7 @@ struct Comments {
   @StorageProp('login_state') login_state: boolean = false
   @State commentsList: Array<CommentData> = []
   @State commentValue: string = ''
-  likePosts: Array<number>
+  likePosts: Array<number> = []
   private getComments = () => {
     return axios.get<CommentResponse>(`/community/comments/${this.postId}`)
   }
