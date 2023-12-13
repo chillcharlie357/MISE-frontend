@@ -24,7 +24,7 @@ struct Index {
   }
 
   build() {
-    if (!this.login_state) {
+    if (this.login_state) {
       UnLoginPage()
     } else {
       Tabs({ barPosition: BarPosition.End }) {
