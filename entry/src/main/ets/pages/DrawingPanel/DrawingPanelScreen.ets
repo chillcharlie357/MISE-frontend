@@ -6,7 +6,7 @@ import image from '@ohos.multimedia.image';
 import fs from '@ohos.file.fs';
 import promptAction from '@ohos.promptAction'
 import picker from '@ohos.file.picker';
-import buffer from '@ohos.buffer';
+
 @Entry
 @Component
 struct DrawingPanelScreen  {
@@ -301,6 +301,7 @@ struct DrawingPanelScreen  {
         this.OperationBar()
         // 绘制
         this.Draw()
+        SelectPhoto()
       }.width('100%')
       .height('100%')
       // 画笔样式设置
