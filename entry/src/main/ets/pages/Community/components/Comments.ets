@@ -11,6 +11,7 @@ struct Comments {
   @StorageProp('login_state') login_state: boolean = false
   @State commentsList: Array<CommentData> = []
   @State commentValue: string = ''
+  likePosts: Array<number> = []
   private getComments = () => {
     return axios.get<CommentResponse>(`/community/comments/${this.postId}`)
   }
@@ -20,12 +21,25 @@ struct Comments {
 
   aboutToAppear() {
     this.getComments().then((res) => {
-        console.info("Comments: ", JSON.stringify(res.data));
-        this.commentsList = res.data;
-        console.log("CommentsList: ", this.commentsList)
-      }).catch((err) => {
+      console.info("Comments: ", JSON.stringify(res.data));
+      this.commentsList = res.data;
+      console.log("CommentsList: ", this.commentsList)
+    }).catch((err) => {
       console.log(err);
     })
+    const tokenName: string = AppStorage.Get("tokenName")
+    const tokenValue: string = AppStorage.Get("tokenValue")
+    axios.get('/user/likeComments', {
+      headers: {
+        [tokenName]: tokenValue
+      }
+    }).then((res) => {
+      this.likePosts = res.data
+      console.log("LikePosts: ", JSON.stringify(this.likePosts))
+    }).catch((err) => {
+      console.error(JSON.stringify(err))
+    })
+    console.log(JSON.stringify(this.likePosts));
   }
 
   build() {
@@ -85,6 +99,7 @@ struct Comments {
           ListItem() {
             CommentBlock({
               commentInfo: item,
+              isLiked: this.likePosts.includes(item.id)
             })
           }
         }, (item: CommentData) => item.id.toString())

@@ -1,11 +1,13 @@
 import { CommunityScreen } from './Community/CommunityScreen';
 import { DrawingPanelScreen } from './DrawingPanel/DrawingPanelScreen';
 import { ProfileScreen } from './Profile/ProfileScreen';
+import UnLoginPage from './Profile/UnLoginPage';
 
 @Entry
 @Component
 @Preview
-struct Index   {
+struct Index {
+  @StorageProp('login_state') login_state: boolean = false;
   @State currentIndex: number = 0;
   private arr: number[] = [1, 2, 3];
 
@@ -22,49 +24,34 @@ struct Index   {
   }
 
   build() {
-    Tabs({ barPosition: BarPosition.End }) {
-      TabContent() {
-         CommunityScreen()
-      }
-      .tabBar(this.TabBuilder("社区", 0, $r('app.media.ic_public_home'), $r('app.media.ic_public_home')))
+    if (!this.login_state) {
+      UnLoginPage()
+    } else {
+      Tabs({ barPosition: BarPosition.End }) {
+        TabContent() {
+          CommunityScreen()
+        }
+        .tabBar(this.TabBuilder("社区", 0, $r('app.media.ic_public_home'), $r('app.media.ic_public_home')))
 
-      TabContent() {
-        DrawingPanelScreen()
-      }
-      .tabBar(this.TabBuilder("画板", 1, $r('app.media.ic_screenshot_penshape'), $r('app.media.ic_screenshot_penshape')))
+        TabContent() {
+          DrawingPanelScreen()
+        }
+        .tabBar(this.TabBuilder("画板", 1, $r('app.media.ic_screenshot_penshape'), $r('app.media.ic_screenshot_penshape')))
 
-      TabContent() {
-        ProfileScreen()
-      }
-      .tabBar(this.TabBuilder("我的", 2, $r('app.media.ic_public_contacts'), $r('app.media.ic_public_contacts')))
+        TabContent() {
+          ProfileScreen()
+        }
+        .tabBar(this.TabBuilder("我的", 2, $r('app.media.ic_public_contacts'), $r('app.media.ic_public_contacts')))
 
+      }
+      .width('100%')
+      .height('100%')
+      .backgroundColor($r('app.color.snow_grey'))
+      .scrollable(false)
+      .onChange((index) => {
+        this.currentIndex = index
+      })
     }
-    .width('100%')
-    .height('100%')
-    .backgroundColor($r('app.color.snow_grey'))
-    .scrollable(false)
-    .onChange((index) =>
-    {
-      this.currentIndex = index
-    })
+
   }
 }
-
-const toolBarItems = [
-  {
-    value: "Home",
-    icon: $r('app.media.ic_public_home'),
-    action: () => {
-    }
-  },
-  {
-    value: "Profile",
-    icon: $r('app.media.ic_public_contacts'),
-    action: () => {
-    }
-  },
-  {
-    value: "Draw",
-    icon: $r('app.media.ic_screenshot_penshape'),
-  }
-]

@@ -15,6 +15,9 @@ struct CommentBlock {
   }
   onLikeClick: () => void = () => {
     console.info('Comments postId: ' + this.postId)
+    const tokenName: string = AppStorage.Get("tokenName")
+    const tokenValue: string = AppStorage.Get("tokenValue")
+
     let op: string = ""
     if (this.isLiked === true) {
       this.commentInfo.likes--
@@ -25,7 +28,12 @@ struct CommentBlock {
     }
     this.isLiked = !this.isLiked;
 
-    axios.post(`/community/comments/${this.postId}/${this.commentInfo.id}/${op}`)
+    axios.post(`/community/comments/${op}/${this.commentInfo.id}`,
+      null, {
+        headers: {
+          [tokenName]: tokenValue
+        }
+      })
       .then((res) => {
         console.info("like pressed", JSON.stringify(res.data))
       }).catch((err) => {

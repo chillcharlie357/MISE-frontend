@@ -28,9 +28,6 @@ struct ProfileScreen {
     const tokenName: string = AppStorage.Get("tokenName")
     const tokenValue: string = AppStorage.Get("tokenValue")
 
-    console.log("token: ", JSON.stringify({
-      [tokenName]: tokenValue
-    }))
     if (this.login_state) {
       axios.get<UserProfileResponse>('/user/info', {
         headers: {
@@ -56,26 +53,19 @@ struct ProfileScreen {
   }
 
   build() {
-    if (this.login_state) {
-      Column() {
-        Avatar({
-          avatarUrl: this.avatarUrl,
-          username: this.username,
-          description: this.description,
-          uid: this.uid
-        })
+    Column() {
+      Avatar({
+        avatarUrl: this.avatarUrl,
+        username: this.username,
+        description: this.description,
+        uid: this.uid
+      })
 
-        ProfileContent()
-      }
-      .height('100%')
-      .width('100%')
-      .backgroundColor($r('app.color.snow_grey'))
-    } else {
-      UnLoginPage()
-        .height('100%')
-        .width('100%')
+      ProfileContent()
     }
-
+    .height('100%')
+    .width('100%')
+    .backgroundColor($r('app.color.snow_grey'))
 
   }
 }
