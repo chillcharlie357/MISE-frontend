@@ -91,19 +91,21 @@ struct AddPostPage{
           .width(100)
           .height(50)
           .onClick(()=>{
-            const postData:PostData={
-              id:this.uid,
-              avatar:this.avatar,
-              title:this.title,
-              content:this.content,
-              images:null
+            if(this.getUser()!=null){
+              const postData:PostData={
+                id:this.uid,
+                avatar:this.avatar,
+                title:this.title,
+                content:this.content,
+                images:null
+              }
+              this.addPost(postData)
+                .then((res) => {
+                  console.info(JSON.stringify(res))
+                }).catch((err) => {
+                console.error(JSON.stringify(err))
+              })
             }
-            this.addPost(postData)
-              .then((res) => {
-                console.info(JSON.stringify(res))
-              }).catch((err) => {
-              console.error(JSON.stringify(err))
-            })
           })
 
         Button('取消')
