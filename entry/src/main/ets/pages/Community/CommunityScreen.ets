@@ -5,6 +5,7 @@ import { PostList } from '../../components/PostList';
 import axios from '../../axios'
 import { PostDataGetter, PostData, PostResponse } from '../../data/data';
 import { fakePostContentData } from '../../utils/fakePostContent';
+import {addIcon} from '../Community/components/addIcon'
 
 @Entry
 @Component
@@ -33,8 +34,8 @@ struct CommunityScreen {
 
   build() {
     Column() {
-
       CustomDialogUser().zIndex(9999)
+      addIcon().zIndex(9999)
 
       PostList({ getPostData: this.getPostData })
 
