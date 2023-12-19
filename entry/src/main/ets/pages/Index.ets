@@ -2,6 +2,7 @@ import { CommunityScreen } from './Community/CommunityScreen';
 import { DrawingPanelScreen } from './DrawingPanel/DrawingPanelScreen';
 import { ProfileScreen } from './Profile/ProfileScreen';
 import UnLoginPage from './Profile/UnLoginPage';
+import router from '@ohos.router';
 
 @Entry
 @Component
@@ -9,7 +10,22 @@ import UnLoginPage from './Profile/UnLoginPage';
 struct Index {
   @StorageProp('login_state') login_state: boolean = false;
   @State currentIndex: number = 0;
+
   private arr: number[] = [1, 2, 3];
+  @State des: string = router.getParams()?.['description']
+  @State usn: string = router.getParams()?.['username']
+  @StorageLink('username') usrlink:string = ""
+
+  onPageShow(){
+    console.log("IndexPage onShow")
+    // this.des = router.getParams()?.['description']
+    // this.usn = router.getParams()?.['username']
+    // console.log("IndexPage username :" + this.usn)
+    // console.log("IndexPage description :" + this.des)
+    // console.log("IndexPage usrlink :" + this.usrlink)
+    // if(this.usn !== undefined)
+    //   console.log("IndexPage 成功收到返回信息")
+  }
 
   @Builder TabBuilder(title: string, targetIndex: number, selectedImg: Resource, normalImg: Resource) {
     Column() {
@@ -40,7 +56,9 @@ struct Index {
         .tabBar(this.TabBuilder("画板", 1, $r('app.media.ic_screenshot_penshape'), $r('app.media.ic_screenshot_penshape')))
 
         TabContent() {
+
           ProfileScreen()
+
         }
         .tabBar(this.TabBuilder("我的", 2, $r('app.media.ic_public_contacts'), $r('app.media.ic_public_contacts')))
 
