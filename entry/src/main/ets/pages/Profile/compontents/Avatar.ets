@@ -1,4 +1,5 @@
 import promptAction from '@ohos.promptAction';
+import router from '@ohos.router';
 
 @Component
 struct Avatar {
@@ -7,9 +8,13 @@ struct Avatar {
   @Prop description: string
   @Prop uid: string
   @StorageLink('login_state') login_state: boolean = false
+  @StorageLink('description') des:string = this.description
+  @StorageLink('username') usr:string = this.username
 
   aboutToAppear() {
     console.info("avatarUrl: " + this.avatarUrl)
+    console.log("Avater username: " + this.usr)
+    console.log("Avater description: " + this.des)
   }
 
   logout_trial(): void {
@@ -60,9 +65,14 @@ struct Avatar {
               .borderRadius(5)
               .alignSelf(ItemAlign.Center)
               .objectFit(ImageFit.Auto)
+            // .onClick(() =>{
+            //   console.log("AvaterClick username: " + this.usr)
+            //   console.log("AvaterClick description: " + this.des)
+            // })
 
             Column({ space: 5 }) {
-              Text(this.username)
+              // Text(this.username)
+              Text(this.usr)
                 .fontSize(18)
                 .fontWeight(FontWeight.Bold)
 
@@ -73,9 +83,16 @@ struct Avatar {
                   .fontSize(15)
                   .baselineOffset(TextAlign.Start)
               }
-            }.width("60%")
+            }.width("50%")
             .alignItems(HorizontalAlign.Start)
             .padding({ bottom: 15 })
+
+            Image($r('app.media.ic_settings'))
+              .height(30)
+              .width(30)
+              .onClick(() =>{
+                router.pushUrl({ url: 'pages/Profile/UserInfoScreen' })
+              })
 
             Image($r('app.media.profile_logout'))
               .height(30)
@@ -88,7 +105,8 @@ struct Avatar {
 
         }.layoutWeight(1)
 
-        Text(this.description)
+        // Text(this.description)
+        Text(this.des)
           .fontSize(15)
           .layoutWeight(2)
           .alignSelf(ItemAlign.Start)

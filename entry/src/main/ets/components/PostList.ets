@@ -1,5 +1,6 @@
 import { PostDataGetter, PostData } from '../data/data';
 import { PostCard } from './PostCard';
+import promptAction from '@ohos.promptAction';
 
 @Component
 struct PostList {
@@ -25,6 +26,28 @@ struct PostList {
     .height('100%')
     .scrollBar(BarState.On)
     .zIndex(50)
+
+
+    // WaterFlow() {
+    //   ForEach(this.contents, (item: PostData) => {
+    //     FlowItem() {
+    //       PostCard({ content: item })
+    //     }
+    //     .onAppear(() => {
+    //       if (this.contents.length <= this.contents.indexOf(item) + 5) {
+    //         promptAction.showToast({
+    //           message: "快要刷新了" + this.contents.indexOf(item),
+    //           duration: this.contents.indexOf(item)
+    //         })
+    //       }
+    //
+    //     })
+    //     // .height(100 + (item % 5) * 10)
+    //     // .backgroundColor(Color.Gray)
+    //   }, content => content.id)
+    // }
+
+
   }
 }
 

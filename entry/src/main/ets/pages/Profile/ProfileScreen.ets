@@ -21,12 +21,17 @@ struct ProfileScreen {
   @State followers: number = 0
   @State following: number = 0
   @StorageLink('login_state') login_state: boolean = false
+
   @State login_out_show: string = "log out"
+  @State des:string = ""
+  @State usn:string = ""
 
   aboutToAppear() {
     console.info("ProfileScreen appear")
     const tokenName: string = AppStorage.Get("tokenName")
     const tokenValue: string = AppStorage.Get("tokenValue")
+    console.info("Profile tokenName:"+tokenName)
+    console.info("Profile tokenValue:"+tokenValue)
 
     if (this.login_state) {
       axios.get<UserProfileResponse>('/user/info', {
@@ -44,12 +49,20 @@ struct ProfileScreen {
           this.following = res.data.following
           this.uid = '' + res.data.id
           AppStorage.SetOrCreate('username', res.data.username)
+          AppStorage.SetOrCreate('description',res.data.description)
           AppStorage.SetOrCreate('userAvatar', res.data.avatarUrl)
+
+          // this.username = AppStorage.Get('username')
+          // this.description = AppStorage.Get('description')
         })
         .catch((err) => {
           console.error(err);
         })
     }
+  }
+
+  onPageShow(){
+    console.info("ProfileScreen onShow")
   }
 
   build() {

@@ -1,4 +1,5 @@
 // 约定axios的请求返回response的格式
+import { expect } from "@ohos/hypium"
 
 export type UserProfileResponse = {
   id: number
@@ -8,12 +9,24 @@ export type UserProfileResponse = {
   description: string
   followers: number
   following: number
+  email:string
 }
 
 
 export type LoginRequest = {
   email: string
   password: string
+}
+
+export type EditRequest = {
+  avatarUrl: string
+  username: string
+  description: string
+  followers: number
+  following: number
+  email:string
+  id:number
+
 }
 
 export type LoginResponse = {

@@ -47,6 +47,7 @@ struct LoginPage {
       axios.post<LoginResponse>('/user/login', loginRequest)
         .then((res) => {
           if (res.status === 200) {
+            console.log("LoginResponse first: " ,JSON.stringify(res.data))
             // login success
             AppStorage.SetAndProp('tokenName', res.data.saTokenInfo.tokenName);
             AppStorage.SetAndProp('tokenValue', res.data.saTokenInfo.tokenValue);
