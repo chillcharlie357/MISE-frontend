@@ -25,7 +25,7 @@ struct UserInfoScreen {
   private userName:string = ""
   private Description:string = ""
   // @State username:string = "nickname"
-  // @State
+
 
   save():void{
     if(this.userName === '')
