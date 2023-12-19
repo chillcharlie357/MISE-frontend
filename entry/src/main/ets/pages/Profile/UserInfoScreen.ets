@@ -5,6 +5,12 @@ import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
 import { describe } from '@ohos/hypium'
 
+@Extend(Line) function lineStyle() {
+  .width("93.3%")
+  .height($r('app.float.line_height'))
+  .backgroundColor($r('app.color.loginPage_line_color'))
+}
+
 @Entry
 @Component
 struct UserInfoScreen {
@@ -20,7 +26,42 @@ struct UserInfoScreen {
   private Description:string = ""
   // @State username:string = "nickname"
   // @State
-  save_and_back():void{
+
+
+  save_pop():void {
+    try {
+      promptAction.showDialog({
+        'title': "要保存吗？",
+        'message': "向世人秀出你自己吧！\n\n",
+        'buttons': [
+          {
+            text: "我已确定！",
+            color: '#000000'
+          },
+          {
+            text: "再考虑考虑",
+            color: '#000000'
+          }]
+      },
+        (err, data) => {
+          if (err) {
+            console.info('saveIntent showDialog err: ' + err);
+            return;
+          }
+          console.info('saveIntent showDialog success callback, click button: ' + data.index);
+          if (data.index === 0)
+          {
+           this.save()
+          }
+        })
+    }
+    catch (err)
+    {
+      console.error("UserInfoScreenErr saveIntent:"+err);
+    }
+  }
+
+  save():void{
     if(this.userName === '')
     {
       promptAction.showToast({
@@ -67,13 +108,7 @@ struct UserInfoScreen {
       AppStorage.SetOrCreate('description',this.Description)
       console.log("UserInfoScreenSet username: " + AppStorage.Get('username'))
       console.log("UserInfoScreenSet description: " + AppStorage.Get('description'))
-      router.back({
-        url:'pages/Index',
-        params:{
-          username:this.userName,
-          description:this.Description
-        }
-      })
+
     }
   }
 
@@ -81,15 +116,15 @@ struct UserInfoScreen {
 
       try {
         promptAction.showDialog({
-          'title': "写好了吗？",
-          'message': "你确定要保存吗？",
+          'title': "确定离开了吗？",
+          'message': "别忘了点击右上角的按钮保存哟！\n\n",
           'buttons': [
             {
-              text: "确定",
+              text: "我已确定！",
               color: '#000000'
             },
             {
-              text: "取消",
+              text: "再考虑考虑",
               color: '#000000'
             }]
         },
@@ -100,7 +135,16 @@ struct UserInfoScreen {
             }
             console.info('showDialog success callback, click button: ' + data.index);
             if (data.index === 0)
-              this.save_and_back()
+              //this.save()
+            {
+              router.back({
+                url:'pages/Index',
+                params:{
+                  username:this.userName,
+                  description:this.Description
+                }
+              })
+            }
           })
 
       }
@@ -155,30 +199,48 @@ struct UserInfoScreen {
       Row(){
         Column(){
           Image($r("app.media.back_icon"))
-            .height(30)
-            .width(30)
-
+            .height(50)
+            .width(50)
             .onClick(() =>{
               this.back_intent()
             })
         }
+        // .backgroundColor(Color.Red)
         .width("20%")
         // .backgroundColor(Color.Red)
+        Column(){
 
-        // Column() {
-        //   Text("用户信息")
-        //     .fontSize(24)
-        // }
-        // .width("60%")
+        }
+        .width("60%")
+
+        Column() {
+          Image($r("app.media.ic_save"))
+            .height(40)
+            .width(40)
+            // .margin({right:10})
+        }
+        .width("15%")
+        .onClick(() =>{
+          this.save_pop()
+        })
+        // .backgroundColor(Color.Red)
+        // .margin({right:20})
       }
       .width("100%")
-      .padding({top:30})
+      .padding({top:10})
+
+      // Column(){
+      //
+      // }
+      // .backgroundColor($r('app.color.loginPage_line_color'))
+      // .height(1)
+      Line().lineStyle().margin({top:10})
 
 
       Image(this.avatarUrl)
         .width(84)
         .height(84)
-        .margin({top:"8%"})
+        .margin({top:"10%"})
 
       Text("用户信息")
         .fontSize(16)
