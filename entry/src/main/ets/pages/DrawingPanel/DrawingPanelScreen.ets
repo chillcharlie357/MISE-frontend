@@ -1,12 +1,11 @@
 import { DrawInfoModel, Coord } from './model/drawInfoModel';
-import { SelectPhoto } from './Component/SeletPhoto'
 import { HintDialog } from './dialog/hintDialog';
 import { StyleSetting } from './Component/styleSetting';
 import image from '@ohos.multimedia.image';
 import fs from '@ohos.file.fs';
 import promptAction from '@ohos.promptAction'
 import picker from '@ohos.file.picker';
-
+import { UploadButton } from '../../components/UploadImage'
 @Entry
 @Component
 struct DrawingPanelScreen  {
@@ -300,8 +299,8 @@ struct DrawingPanelScreen  {
         // 操作栏
         this.OperationBar()
         // 绘制
-        this.Draw()
-        SelectPhoto()
+         this.Draw()
+         UploadButton()
       }.width('100%')
       .height('100%')
       // 画笔样式设置

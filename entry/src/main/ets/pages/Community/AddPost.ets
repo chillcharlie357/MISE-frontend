@@ -1,11 +1,38 @@
+import {UploadButton} from '../../components/UploadImage'
+import axios from '../../axios'
+import {UserProfileResponse,PostData} from '../../data/data'
+import { Content } from '../../data/PostContent'
+
 @Entry
 @Component
 @Preview
 struct AddPostPage{
+  private getUser = () =>{
+    return axios.get<UserProfileResponse>('/user/info')
+      .then((response)=>{
+        this.uid=response.data.id
+        this.avatar=response.data.avatarUrl
+          return response.data
+      })
+      .catch((err)=>{
+          console.log('get user profile err')
+          return null;
+      })
+  }
+
+  private addPost = (postData : PostData)=>{
+    return axios.post('/community/post',postData)
+  }
+
+
+  @State avatar:string=''
+  @State uid:number = 0
   @State title: string = ''
   @State content: string = ''
-  @State pictureURL: Array<string> = ['pages/icon/ic_public_favor.svg']
+  @State pictureURL: Array<string> = ['pages/Community/icon/ic_public_favor.svg']
   scroller: Scroller = new Scroller()
+
+
 
   build() {
     Column(){
@@ -25,6 +52,7 @@ struct AddPostPage{
           this.title=value
         })
 
+
       Divider()
         .strokeWidth(2)
         .margin({top:10})
@@ -36,6 +64,7 @@ struct AddPostPage{
         .onChange((value)=>{
           this.content=value
         })
+
 
       Scroll(this.scroller) {
         Row() {
@@ -61,6 +90,24 @@ struct AddPostPage{
         Button('发布')
           .width(100)
           .height(50)
+          .onClick(()=>{
+            if(this.getUser()!=null){
+              const postData:PostData={
+                id:this.uid,
+                avatar:this.avatar,
+                title:this.title,
+                content:this.content,
+                images:null
+              }
+              this.addPost(postData)
+                .then((res) => {
+                  console.info(JSON.stringify(res))
+                }).catch((err) => {
+                console.error(JSON.stringify(err))
+              })
+            }
+          })
+
         Button('取消')
           .width(100)
           .height(50)
