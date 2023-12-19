@@ -27,40 +27,6 @@ struct UserInfoScreen {
   // @State username:string = "nickname"
   // @State
 
-
-  save_pop():void {
-    try {
-      promptAction.showDialog({
-        'title': "要保存吗？",
-        'message': "向世人秀出你自己吧！\n\n",
-        'buttons': [
-          {
-            text: "我已确定！",
-            color: '#000000'
-          },
-          {
-            text: "再考虑考虑",
-            color: '#000000'
-          }]
-      },
-        (err, data) => {
-          if (err) {
-            console.info('saveIntent showDialog err: ' + err);
-            return;
-          }
-          console.info('saveIntent showDialog success callback, click button: ' + data.index);
-          if (data.index === 0)
-          {
-           this.save()
-          }
-        })
-    }
-    catch (err)
-    {
-      console.error("UserInfoScreenErr saveIntent:"+err);
-    }
-  }
-
   save():void{
     if(this.userName === '')
     {
@@ -102,6 +68,9 @@ struct UserInfoScreen {
         })
         .catch((err) => {
           console.error("UserInfoScreenErr Returnerr:"+err);
+          promptAction.showToast({
+            "message":"请求失败，请检查连接"
+          })
         })
 
       AppStorage.SetOrCreate('username',this.userName)
@@ -221,7 +190,7 @@ struct UserInfoScreen {
         }
         .width("15%")
         .onClick(() =>{
-          this.save_pop()
+          this.save()
         })
         // .backgroundColor(Color.Red)
         // .margin({right:20})
