@@ -300,7 +300,7 @@ struct DrawingPanelScreen  {
         this.OperationBar()
         // 绘制
          this.Draw()
-         UploadButton()
+         // UploadButton()
       }.width('100%')
       .height('100%')
       // 画笔样式设置

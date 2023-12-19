@@ -6,6 +6,7 @@ import picker from '@ohos.file.picker';
 import fs from '@ohos.file.fs';
 import common from '@ohos.app.ability.common';
 import request from '@ohos.request';
+import promptAction from '@ohos.promptAction'
 type Fi={
   filename:string,
   name:string,
@@ -43,7 +44,12 @@ struct AddPostPage{
   // 图片功能
   @State fileList: Array<Fi>=new Array<Fi>();
   @State selectImage:Array<string>=new Array<string>();
+  // 后端返回图片地址
+  @State OSSImage:Array<string>=new Array<string>();
   @State imgSrc: string = ''
+  // 是否允许继续添加图片
+  @State AllowAdd : boolean = true;
+
   context=getContext(this) as common.UIAbilityContext;
   cacheDir = this.context.cacheDir;
 
@@ -55,7 +61,10 @@ struct AddPostPage{
     files: this.fileList,
     // 这边可以上传表单数据
     data: [
-      { name: 'fileId', value: 'FP000008' }
+      { name: 'uid', value: this.uid.toString()},
+      { name: 'title',value: this.title },
+      { name: 'content',value: this.content },
+      { name: 'avatar',value: this.avatar },
     ]
   }
   async  SelectImage(){
@@ -74,6 +83,7 @@ struct AddPostPage{
 
           //用于展示图片
           this.selectImage.push(uris[i]);
+
           // 这边图片的名字可以考虑采取随即算成算法生成名字，以免重复
           this.imgSrc=uris[i]
           console.log(this.selectImage.toString())
@@ -83,6 +93,9 @@ struct AddPostPage{
           fs.copyFileSync(imageFile.fd,this.cacheDir+'/'+imageName+'.jpeg')
           let file={filename:imageName+'.jpeg',name:imageName,uri:this.cacheDir+'/'+imageName+'.jpeg',type:"jpeg"};
           this.fileList.push(file)
+        }
+        if(this.selectImage.length>=5){
+          this.AllowAdd=false
         }
         console.log(JSON.stringify(this.fileList))
         console.log(JSON.stringify(this.selectImage))
@@ -100,6 +113,7 @@ struct AddPostPage{
           //成功之后清空上传列表
           this.selectImage=[]
           this.fileList=[]
+          this.AllowAdd=true
           for (let i = 0; i < taskStates.length; i++) {
             console.info(`xx upload complete taskState: ${JSON.stringify(taskStates[i])}`);
             //this.message = JSON.stringify(taskStates[i])
@@ -119,14 +133,13 @@ struct AddPostPage{
 
   build() {
     Column(){
-
       Text('发布')
         .textAlign(TextAlign.Center)
         .fontSize(30)
         .padding(10)
         .width('100%')
-      Grid(this.scroller) {
-        ForEach(this.selectImage, (imageUir: string) => {
+      Grid() {
+        ForEach(this.selectImage, (imageUir: string,index:number) => {
           GridItem() {
             Badge({
               value:"-",
@@ -134,26 +147,49 @@ struct AddPostPage{
               style: { color: 0xFFFFFF, fontSize: 10, badgeSize: 12, badgeColor: Color.Red } // 设置 badge 的显示样式
             }){
               Image(imageUir)
-            }.width('80%')
-            .height("20%")
-           // .onClick()
+                .height(55)
+                .width(55)
+
+            }.height(55)
+            .width(55)
+            .onClick(()=>{
+              this.selectImage.splice(index,1)
+              this.fileList.splice(index,1)
+              this.AllowAdd=true
+              promptAction.showToast({
+                message:"删除图片",
+                duration:1000,
+              })
+              // this.AllowAdd=true
+            })
           }.margin(5)
         })
-        GridItem() {
-          Button({type: ButtonType.Circle}){
+        if(this.AllowAdd){
+          GridItem() {
+            Button({type: ButtonType.Circle}){
+              Image($r('app.media.ic_public_add_norm'))
+            }
+            .onClick(this.SelectImage.bind(this))
+            .width(30)
+            .height(30)
+          }.margin(15)
+        }else{
+          GridItem() {
+            Text()
           }
-          .onClick(this.SelectImage.bind(this))
-          .width(40)
-          .height(40)
         }
       }
-      .columnsTemplate('1fr 1fr 1fr 1fr')
+      .columnsTemplate('1fr 1fr 1fr 1fr 1fr')
       .columnsGap(10)
       .rowsGap(10)
       .margin(10)
-      .width('90%')
-      .backgroundColor("#fff")
-      .height(300)
+      .width('95%')
+      .backgroundColor("#DCDCDC")
+      .height(70)
+      .borderRadius(10)
+      Divider()
+        .strokeWidth(2)
+        .margin({top:10})
 
       TextInput({placeholder:'请输入标题'})
         .height(40)
@@ -179,24 +215,24 @@ struct AddPostPage{
         })
 
 
-      Scroll(this.scroller) {
-        Row() {
-          ForEach(this.pictureURL, (item) => {
-            Image(item)
-              .height(80)
-              .width(80)
-              .margin({right:10})
-              .onClick(()=>{
-                //
-              })
-          })
-        }.width('100%')
-      }
-      .scrollable(ScrollDirection.Horizontal)
-      .scrollBar(BarState.On)
-      .scrollBarColor(Color.Gray)
-      .scrollBarWidth(10)
-      .margin({top:10})
+      // Scroll(this.scroller) {
+      //   Row() {
+      //     ForEach(this.pictureURL, (item) => {
+      //       Image(item)
+      //         .height(80)
+      //         .width(80)
+      //         .margin({right:10})
+      //         .onClick(()=>{
+      //           //
+      //         })
+      //     })
+      //   }.width('100%')
+      // }
+      // .scrollable(ScrollDirection.Horizontal)
+      // .scrollBar(BarState.On)
+      // .scrollBarColor(Color.Gray)
+      // .scrollBarWidth(10)
+      // .margin({top:10})
 
 
       Row({space:50}){
@@ -205,19 +241,20 @@ struct AddPostPage{
           .height(50)
           .onClick(()=>{
             if(this.getUser()!=null){
-              const postData:PostData={
-                id:this.uid,
-                avatar:this.avatar,
-                title:this.title,
-                content:this.content,
-                images:null
-              }
-              this.addPost(postData)
-                .then((res) => {
-                  console.info(JSON.stringify(res))
-                }).catch((err) => {
-                console.error(JSON.stringify(err))
-              })
+              this.uploadRequest()
+              // const postData:PostData={
+              //   id:this.uid,
+              //   avatar:this.avatar,
+              //   title:this.title,
+              //   content:this.content,
+              //   images:null
+              // }
+              // this.addPost(postData)
+              //   .then((res) => {
+              //     console.info(JSON.stringify(res))
+              //   }).catch((err) => {
+              //   console.error(JSON.stringify(err))
+              // })
             }
           })
 
