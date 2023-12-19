@@ -8,6 +8,7 @@
     "pages/Community/PostDetail",
     "pages/Profile/RegisterScreen",
     "pages/Profile/UnLoginPage",
-    "pages/Community/AddPost"
+    "pages/Community/AddPost",
+    "pages/Profile/UserInfoScreen"
   ]
 }
