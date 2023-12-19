@@ -2,6 +2,8 @@ import picker from '@ohos.file.picker';
 import fs from '@ohos.file.fs';
 import common from '@ohos.app.ability.common';
 import request from '@ohos.request';
+import { HintDialog } from '../pages/DrawingPanel/dialog/hintDialog';
+import promptAction from '@ohos.promptAction';
 //获取文件路径
 
 // 上传任务配置项
@@ -15,6 +17,26 @@ type Fi={
 export struct UploadButton{
   context=getContext(this) as common.UIAbilityContext;
   cacheDir = this.context.cacheDir;
+
+  private saveController:CustomDialogController =new CustomDialogController({
+    builder:HintDialog({
+      title:"保存",
+      content: '确定保存当前画板？',
+      confirm:() => {
+        promptAction.showToast({
+          message:"正在保存",
+          duration:1000,
+        })
+        // var context : Context = getContext(this) as Context
+        // this.pathdir=context.filesDir
+        // this.pixelMap=this.crc.getPixelMap(0,0,this.canvasWidth,this.canvasHeight);
+        // const imagePackerApi=image.createImagePacker();
+        // let packOpts={ format:"image/jpeg",quality:98}
+      },
+      cancel:()=>{
+      }
+    })
+  })
   @State fileList: Array<Fi>=new Array<Fi>();
   @State selectImage:Array<string>=new Array<string>();
   @State imgSrc: string = ''
@@ -66,17 +88,20 @@ export struct UploadButton{
   }
 }
   async uploadRequest(){
+    this.selectImage=[]
+    this.fileList=[]
     try {
       request.uploadFile(this.context,this.uploadConfig).then((uploadTask)=>{
         uploadTask.on('complete', (taskStates) => {
           //成功之后清空上传列表
-          this.selectImage=[]
-          this.fileList=[]
+
           for (let i = 0; i < taskStates.length; i++) {
             console.info(`xx upload complete taskState: ${JSON.stringify(taskStates[i])}`);
             //this.message = JSON.stringify(taskStates[i])
           }
         });
+
+
       })
         .catch((err)=>{
           console.error(`xx Invoke uploadFile failed, code is ${err.code}, message is ${err.message}`);
@@ -89,10 +114,10 @@ export struct UploadButton{
     Column({space:5}) {
       Row() {
         Button("上传图片")
-          .onClick(this.uploadRequest)
+          .onClick(this.uploadRequest.bind(this))
       }
-      Grid(this.scroller) {
-        ForEach(this.selectImage, (imageUir: string) => {
+      Grid() {
+        ForEach(this.selectImage, (imageUir: string,index:number) => {
           GridItem() {
             Badge({
               value:"-",
@@ -102,6 +127,14 @@ export struct UploadButton{
               Image(imageUir)
             }.width('80%')
             .height("20%")
+            .onClick(()=>{
+              this.selectImage.splice(index,1)
+              this.fileList.splice(index,1)
+              promptAction.showToast({
+                message:"删除图片",
+                duration:1000,
+              })
+            })
           }.margin(5)
         })
         GridItem() {
