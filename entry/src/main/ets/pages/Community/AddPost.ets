@@ -1,73 +1,66 @@
-import {UploadButton} from '../../components/UploadImage'
+import { UploadButton } from '../../components/UploadImage'
 import axios from '../../axios'
-import {UserProfileResponse,PostData} from '../../data/data'
+import { UserProfileResponse, PostData } from '../../data/data'
 import { Content } from '../../data/PostContent'
 import picker from '@ohos.file.picker';
 import fs from '@ohos.file.fs';
 import common from '@ohos.app.ability.common';
 import request from '@ohos.request';
 import promptAction from '@ohos.promptAction'
-type Fi={
-  filename:string,
-  name:string,
-  uri:string,
-  type:string,
+import router from '@ohos.router'
+
+type Fi = {
+  filename: string,
+  name: string,
+  uri: string,
+  type: string,
 }
+
 @Entry
 @Component
 @Preview
-struct AddPostPage{
-
-  private getUser = () =>{
-    return axios.get<UserProfileResponse>('/user/info')
-      .then((response)=>{
-        this.uid=response.data.id
-        this.avatar=response.data.avatarUrl
-          return response.data
-      })
-      .catch((err)=>{
-          console.log('get user profile err')
-          return null;
-      })
+struct AddPostPage {
+  private addPost = (postData: PostData) => {
+    const tokenName: string = AppStorage.Get("tokenName")
+    const tokenValue: string = AppStorage.Get("tokenValue")
+    return axios.post('/community/post', postData, {
+      headers: {
+        [tokenName]: tokenValue
+      }
+    })
   }
-
-  private addPost = (postData : PostData)=>{
-    return axios.post('/community/post',postData)
-  }
-
-
-  @State avatar:string=''
-  @State uid:number = 0
+  @State avatar: string = AppStorage.Get("userAvatar")
+  @State uid: number = parseInt(AppStorage.Get("userUId"))
+  @StorageProp('login_state') login_state: boolean = false
   @State title: string = ''
   @State content: string = ''
   @State pictureURL: Array<string> = ['pages/Community/icon/ic_public_favor.svg']
   // 图片功能
-  @State fileList: Array<Fi>=new Array<Fi>();
-  @State selectImage:Array<string>=new Array<string>();
+  @State fileList: Array<Fi> = new Array<Fi>();
+  @State selectImage: Array<string> = new Array<string>();
   // 后端返回图片地址
-  @State OSSImage:Array<string>=new Array<string>();
+  @State OSSImage: Array<string> = new Array<string>("https://images.pexels.com/photos/11456379/pexels-photo-11456379.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
   @State imgSrc: string = ''
   // 是否允许继续添加图片
-  @State AllowAdd : boolean = true;
-
-  context=getContext(this) as common.UIAbilityContext;
+  @State AllowAdd: boolean = true;
+  context = getContext(this) as common.UIAbilityContext;
   cacheDir = this.context.cacheDir;
-
   uploadConfig = {
     // 后端接口
-    url: 'http://192.168.3.48:8740/file/upload',
+    url: axios.defaults.baseURL + '/file/upload',
     header: { key1: 'Content-Type', key2: 'multipart/form-data' },
     method: 'POST',
     files: this.fileList,
     // 这边可以上传表单数据
     data: [
-      { name: 'uid', value: this.uid.toString()},
-      { name: 'title',value: this.title },
-      { name: 'content',value: this.content },
-      { name: 'avatar',value: this.avatar },
+      { name: 'uid', value: this.uid.toString() },
+      { name: 'title', value: this.title },
+      { name: 'content', value: this.content },
+      { name: 'avatar', value: this.avatar },
     ]
   }
-  async  SelectImage(){
+
+  async SelectImage() {
     try {
       let PhotoSelectOptions = new picker.PhotoSelectOptions();
       PhotoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE;
@@ -78,24 +71,29 @@ struct AddPostPage{
       photoPicker.select(PhotoSelectOptions).then((PhotoSelectResult) => {
         console.log('PhotoViewPicker.select successfully, PhotoSelectResult uri: ' + JSON.stringify(PhotoSelectResult));
 
-        let uris=PhotoSelectResult["photoUris"];
-        for(let i=0;i<uris.length;i++){
+        let uris = PhotoSelectResult["photoUris"];
+        for (let i = 0;i < uris.length; i++) {
 
           //用于展示图片
           this.selectImage.push(uris[i]);
 
           // 这边图片的名字可以考虑采取随即算成算法生成名字，以免重复
-          this.imgSrc=uris[i]
+          this.imgSrc = uris[i]
           console.log(this.selectImage.toString())
-          let temp=uris[i].split("/");
-          let imageName=temp[temp.length-1];
-          let imageFile=fs.openSync(uris[i],fs.OpenMode.CREATE)
-          fs.copyFileSync(imageFile.fd,this.cacheDir+'/'+imageName+'.jpeg')
-          let file={filename:imageName+'.jpeg',name:imageName,uri:this.cacheDir+'/'+imageName+'.jpeg',type:"jpeg"};
+          let temp = uris[i].split("/");
+          let imageName = temp[temp.length-1];
+          let imageFile = fs.openSync(uris[i], fs.OpenMode.CREATE)
+          fs.copyFileSync(imageFile.fd, this.cacheDir + '/' + imageName + '.jpeg')
+          let file = {
+            filename: imageName + '.jpeg',
+            name: imageName,
+            uri: this.cacheDir + '/' + imageName + '.jpeg',
+            type: "jpeg"
+          };
           this.fileList.push(file)
         }
-        if(this.selectImage.length>=5){
-          this.AllowAdd=false
+        if (this.selectImage.length >= 5) {
+          this.AllowAdd = false
         }
         console.log(JSON.stringify(this.fileList))
         console.log(JSON.stringify(this.selectImage))
@@ -106,24 +104,25 @@ struct AddPostPage{
       console.error('PhotoViewPicker failed with err: ' + err);
     }
   }
-  async uploadRequest(){
+
+  async uploadRequest() {
     try {
-      request.uploadFile(this.context,this.uploadConfig).then((uploadTask)=>{
+      request.uploadFile(this.context, this.uploadConfig).then((uploadTask) => {
         uploadTask.on('complete', (taskStates) => {
           //成功之后清空上传列表
-          this.selectImage=[]
-          this.fileList=[]
-          this.AllowAdd=true
+          this.selectImage = []
+          this.fileList = []
+          this.AllowAdd = true
           for (let i = 0; i < taskStates.length; i++) {
             console.info(`xx upload complete taskState: ${JSON.stringify(taskStates[i])}`);
             //this.message = JSON.stringify(taskStates[i])
           }
         });
       })
-        .catch((err)=>{
+        .catch((err) => {
           console.error(`xx Invoke uploadFile failed, code is ${err.code}, message is ${err.message}`);
         })
-    }catch (err){
+    } catch (err) {
       console.error(`xx Invoke uploadFile failed, code is ${err.code}, message is ${err.message}`);
     }
   }
@@ -132,48 +131,48 @@ struct AddPostPage{
   scroller: Scroller = new Scroller()
 
   build() {
-    Column(){
+    Column() {
       Text('发布')
         .textAlign(TextAlign.Center)
         .fontSize(30)
         .padding(10)
         .width('100%')
       Grid() {
-        ForEach(this.selectImage, (imageUir: string,index:number) => {
+        ForEach(this.selectImage, (imageUir: string, index: number) => {
           GridItem() {
             Badge({
-              value:"-",
-              position: BadgePosition.RightTop,// 设置 badge 显示在右上角
+              value: "-",
+              position: BadgePosition.RightTop, // 设置 badge 显示在右上角
               style: { color: 0xFFFFFF, fontSize: 10, badgeSize: 12, badgeColor: Color.Red } // 设置 badge 的显示样式
-            }){
+            }) {
               Image(imageUir)
                 .height(55)
                 .width(55)
 
             }.height(55)
             .width(55)
-            .onClick(()=>{
-              this.selectImage.splice(index,1)
-              this.fileList.splice(index,1)
-              this.AllowAdd=true
+            .onClick(() => {
+              this.selectImage.splice(index, 1)
+              this.fileList.splice(index, 1)
+              this.AllowAdd = true
               promptAction.showToast({
-                message:"删除图片",
-                duration:1000,
+                message: "删除图片",
+                duration: 1000,
               })
               // this.AllowAdd=true
             })
           }.margin(5)
         })
-        if(this.AllowAdd){
+        if (this.AllowAdd) {
           GridItem() {
-            Button({type: ButtonType.Circle}){
+            Button({ type: ButtonType.Circle }) {
               Image($r('app.media.ic_public_add_norm'))
             }
             .onClick(this.SelectImage.bind(this))
             .width(30)
             .height(30)
           }.margin(15)
-        }else{
+        } else {
           GridItem() {
             Text()
           }
@@ -187,31 +186,32 @@ struct AddPostPage{
       .backgroundColor("#DCDCDC")
       .height(70)
       .borderRadius(10)
+
       Divider()
         .strokeWidth(2)
-        .margin({top:10})
+        .margin({ top: 10 })
 
-      TextInput({placeholder:'请输入标题'})
+      TextInput({ placeholder: '请输入标题' })
         .height(40)
         .textAlign(TextAlign.Start)
         .fontSize(15)
-        .margin({top:10})
+        .margin({ top: 10 })
         .width('95%')
-        .onChange((value)=>{
-          this.title=value
+        .onChange((value) => {
+          this.title = value
         })
 
 
       Divider()
         .strokeWidth(2)
-        .margin({top:10})
+        .margin({ top: 10 })
 
-      TextArea({placeholder:'请输入正文'})
-        .height('40%')
-        .margin({top:10})
+      TextArea({ placeholder: '请输入正文' })
+        .margin({ top: 10 })
         .width('95%')
-        .onChange((value)=>{
-          this.content=value
+        .height(200)
+        .onChange((value) => {
+          this.content = value
         })
 
 
@@ -235,35 +235,73 @@ struct AddPostPage{
       // .margin({top:10})
 
 
-      Row({space:50}){
+      Row({ space: 50 }) {
         Button('发布')
           .width(100)
           .height(50)
-          .onClick(()=>{
-            if(this.getUser()!=null){
+          .onClick(() => {
+            if (this.login_state == true) {
+              if (this.title == '' || this.content == '') {
+                promptAction.showToast({
+                  message: "标题或正文不能为空",
+                  duration: 1000,
+                })
+                return
+              }
+              if (this.OSSImage.length == 0) {
+                promptAction.showToast({
+                  message: "请至少上传一张图片",
+                  duration: 1000,
+                })
+                return
+              }
               this.uploadRequest()
-              // const postData:PostData={
-              //   id:this.uid,
-              //   avatar:this.avatar,
-              //   title:this.title,
-              //   content:this.content,
-              //   images:null
-              // }
-              // this.addPost(postData)
-              //   .then((res) => {
-              //     console.info(JSON.stringify(res))
-              //   }).catch((err) => {
-              //   console.error(JSON.stringify(err))
-              // })
+              const postData: PostData = {
+                id: this.uid,
+                avatar: this.avatar,
+                title: this.title,
+                content: this.content,
+                images: this.OSSImage
+              }
+              this.addPost(postData)
+                .then((res) => {
+                  console.info(JSON.stringify(res))
+                }).catch((err) => {
+                console.error(JSON.stringify(err))
+                promptAction.showToast({
+                  message: "发布失败",
+                  duration: 1000,
+                })
+              })
+            } else {
+              promptAction.showToast({
+                message: "请先登录",
+                duration: 1000,
+              })
             }
+
+            promptAction.showToast({
+              message: "发布成功",
+              duration: 1000,
+            })
+            router.back()
           })
 
         Button('取消')
           .width(100)
           .height(50)
+          .onClick(() => {
+            router.back()
+            promptAction.showToast({
+              message: "取消发布",
+              duration: 1000,
+            })
+          })
       }
-      .margin({top:50})
+      .margin({ top: 50 })
 
     }
+    .width('100%')
+    .height('100%')
   }
 }

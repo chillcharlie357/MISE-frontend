@@ -4,6 +4,7 @@ import { UserInfoText } from './compontents/UserInfoText'
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
 import { describe } from '@ohos/hypium'
+import App from '@system.app'
 
 @Extend(Line) function lineStyle() {
   .width("93.3%")
@@ -75,9 +76,12 @@ struct UserInfoScreen {
 
       AppStorage.SetOrCreate('username',this.userName)
       AppStorage.SetOrCreate('description',this.Description)
+      AppStorage.SetOrCreate('userAvatar',this.avatarUrl)
+      AppStorage.SetOrCreate('userUId',this.uid.toString())
       console.log("UserInfoScreenSet username: " + AppStorage.Get('username'))
       console.log("UserInfoScreenSet description: " + AppStorage.Get('description'))
-
+      console.log("UserInfoScreenSet userAvatar: " + AppStorage.Get('userAvatar'))
+      console.log("UserInfoScreenSet userUId: " + AppStorage.Get('userUId'))
     }
   }
 
