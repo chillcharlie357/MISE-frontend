@@ -51,9 +51,8 @@ struct ProfileScreen {
           AppStorage.SetOrCreate('username', res.data.username)
           AppStorage.SetOrCreate('description',res.data.description)
           AppStorage.SetOrCreate('userAvatar', res.data.avatarUrl)
+          AppStorage.SetOrCreate('userId', '' + res.data.id)
 
-          // this.username = AppStorage.Get('username')
-          // this.description = AppStorage.Get('description')
         })
         .catch((err) => {
           console.error(err);
