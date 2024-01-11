@@ -43,20 +43,23 @@ struct AddPostPage {
   @State imgSrc: string = ''
   // 是否允许继续添加图片
   @State AllowAdd: boolean = true;
+  @State  filename:string="";
+  @State  name:string="";
   context = getContext(this) as common.UIAbilityContext;
   cacheDir = this.context.cacheDir;
   uploadConfig = {
     // 后端接口
-    url: axios.defaults.baseURL + '/file/upload',
+    url: axios.defaults.baseURL + '/community/postPic',
     header: { key1: 'Content-Type', key2: 'multipart/form-data' },
     method: 'POST',
-    files: this.fileList,
+    files: [{
+      filename: this.filename,
+      name: this.name,
+      uri: this.cacheDir + '/' + this.name + '.jpeg',
+      type: "jpeg"
+    }],
     // 这边可以上传表单数据
     data: [
-      { name: 'uid', value: this.uid.toString() },
-      { name: 'title', value: this.title },
-      { name: 'content', value: this.content },
-      { name: 'avatar', value: this.avatar },
     ]
   }
 
@@ -65,7 +68,7 @@ struct AddPostPage {
       let PhotoSelectOptions = new picker.PhotoSelectOptions();
       PhotoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE;
       // 设置上传的最大图片数量
-      PhotoSelectOptions.maxSelectNumber = 5;
+      PhotoSelectOptions.maxSelectNumber = 1;
       let photoPicker = new picker.PhotoViewPicker();
       console.log(this.cacheDir)
       photoPicker.select(PhotoSelectOptions).then((PhotoSelectResult) => {
@@ -90,10 +93,12 @@ struct AddPostPage {
             uri: this.cacheDir + '/' + imageName + '.jpeg',
             type: "jpeg"
           };
+          this.filename=imageName
+          this.name=imageName
           this.fileList.push(file)
           this.OSSImage.push("https://lab22.oss-cn-beijing.aliyuncs.com/MISE-image/"+imageName)
         }
-        if (this.selectImage.length >= 5) {
+        if (this.selectImage.length >= 1) {
           this.AllowAdd = false
         }
         console.log(JSON.stringify(this.fileList))
@@ -120,10 +125,9 @@ struct AddPostPage {
             //this.message = JSON.stringify(taskStates[i])
           }
         });
+      }).catch((err) => {
+          console.error(JSON.stringify(err));
       })
-        .catch((err) => {
-          console.error(`xx Invoke uploadFile failed, code is ${err.code}, message is ${err.message}`);
-        })
     } catch (err) {
       console.error(`xx Invoke uploadFile failed, code is ${err.code}, message is ${err.message}`);
     }
@@ -243,7 +247,7 @@ struct AddPostPage {
           .width(100)
           .height(50)
           .onClick(() => {
-            if (this.login_state == true) {
+            if (true) {
               if (this.title == '' || this.content == '') {
                 promptAction.showToast({
                   message: "标题或正文不能为空",
@@ -251,13 +255,13 @@ struct AddPostPage {
                 })
                 return
               }
-              if (this.OSSImage.length == 0) {
-                promptAction.showToast({
-                  message: "请至少上传一张图片",
-                  duration: 1000,
-                })
-                return
-              }
+              // if (this.OSSImage.length == 0) {
+              //   promptAction.showToast({
+              //     message: "请至少上传一张图片",
+              //     duration: 1000,
+              //   })
+              //   return
+              // }
               this.uploadRequest()
               const postData: PostData = {
                 id: this.uid,
