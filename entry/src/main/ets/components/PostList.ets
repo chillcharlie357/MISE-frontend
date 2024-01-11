@@ -5,27 +5,40 @@ import promptAction from '@ohos.promptAction';
 @Component
 struct PostList {
   @State contents: Array<PostData> = [];
+  @State isRefreshing: boolean = false
   private getPostData: PostDataGetter;
 
   aboutToAppear() {
-    this.getPostData().then((data: Array<PostData>) => {
+    this.getPostData().then(async (data: Array<PostData>) => {
       this.contents = data;
     })
     console.info('PostList aboutToAppear: ', JSON.stringify(this.contents))
   }
 
   build() {
-    List() {
-      ForEach(this.contents, (item: PostData) => {
-        ListItem() {
-          PostCard({ content: item })
-        }
-      }, item => item.id)
-    }
-    .width('100%')
-    .height('100%')
-    .scrollBar(BarState.On)
-    .zIndex(50)
+    Refresh({ refreshing: $$this.isRefreshing, offset: 120, friction: 100 }) {
+      List() {
+        ForEach(this.contents, (item: PostData) => {
+          ListItem() {
+            PostCard({ content: item })
+          }
+        }, item => item.id)
+      }
+      .width('100%')
+      .height('100%')
+    }.onStateChange((refreshStatus: RefreshStatus) => {
+      console.info('Refresh onStatueChange state is ' + refreshStatus)
+    })
+    .onRefreshing(async () => {
+      setTimeout(() => {
+        this.isRefreshing = false
+      }, 1000)
+      await this.getPostData().then((data: Array<PostData>) => {
+        this.contents = data;
+        console.info('onRefreshing: ', JSON.stringify(data))
+        console.info('onRefreshing: ', JSON.stringify(this.contents))
+      })
+    })
 
 
     // WaterFlow() {
@@ -50,5 +63,6 @@ struct PostList {
 
   }
 }
+
 
 export { PostList }

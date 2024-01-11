@@ -47,7 +47,7 @@ struct AddPostPage {
   cacheDir = this.context.cacheDir;
   uploadConfig = {
     // 后端接口
-    url: axios.defaults.baseURL + '/community/postPic',
+    url: axios.defaults.baseURL + '/file/upload',
     header: { key1: 'Content-Type', key2: 'multipart/form-data' },
     method: 'POST',
     files: this.fileList,
@@ -65,7 +65,7 @@ struct AddPostPage {
       let PhotoSelectOptions = new picker.PhotoSelectOptions();
       PhotoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE;
       // 设置上传的最大图片数量
-      PhotoSelectOptions.maxSelectNumber = 1;
+      PhotoSelectOptions.maxSelectNumber = 5;
       let photoPicker = new picker.PhotoViewPicker();
       console.log(this.cacheDir)
       photoPicker.select(PhotoSelectOptions).then((PhotoSelectResult) => {
@@ -93,8 +93,7 @@ struct AddPostPage {
           this.fileList.push(file)
           this.OSSImage.push("https://lab22.oss-cn-beijing.aliyuncs.com/MISE-image/"+imageName)
         }
-
-        if (this.selectImage.length >= 1) {
+        if (this.selectImage.length >= 5) {
           this.AllowAdd = false
         }
         console.log(JSON.stringify(this.fileList))
@@ -109,7 +108,6 @@ struct AddPostPage {
 
   async uploadRequest() {
     try {
-
       request.uploadFile(this.context, this.uploadConfig).then((uploadTask) => {
         uploadTask.on('complete', (taskStates) => {
           //成功之后清空上传列表

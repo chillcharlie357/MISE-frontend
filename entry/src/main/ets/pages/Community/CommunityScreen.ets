@@ -11,8 +11,6 @@ import { addIcon } from '../Community/components/addIcon'
 @Component
 @Preview
 struct CommunityScreen {
-  private swiperController: SwiperController = new SwiperController();
-  @State private contents: PostData[] = [];
   /**
    * 给PostList组件传递的获取数据的方法, 如果直接传contents会导致PostList组件在无法渲染
    * @returns Promise<PostResponse> | null
@@ -39,6 +37,8 @@ struct CommunityScreen {
       addIcon().zIndex(9999)
 
       PostList({ getPostData: this.getPostData })
+        .zIndex(50)
+
 
     }
     .width('100%')
