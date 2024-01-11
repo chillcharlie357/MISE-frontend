@@ -18,6 +18,11 @@ export type LoginRequest = {
   password: string
 }
 
+export type ImageResponse = {
+  imagePath:string
+  [property: string]: any;
+}
+
 export type EditRequest = {
   avatarUrl: string
   username: string
