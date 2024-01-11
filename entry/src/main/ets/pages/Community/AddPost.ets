@@ -39,7 +39,7 @@ struct AddPostPage {
   @State fileList: Array<Fi> = new Array<Fi>();
   @State selectImage: Array<string> = new Array<string>();
   // 后端返回图片地址
-  @State OSSImage: Array<string> = new Array<string>("https://images.pexels.com/photos/11456379/pexels-photo-11456379.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  @State OSSImage: Array<string> = new Array<string>();
   @State imgSrc: string = ''
   // 是否允许继续添加图片
   @State AllowAdd: boolean = true;
@@ -47,7 +47,7 @@ struct AddPostPage {
   cacheDir = this.context.cacheDir;
   uploadConfig = {
     // 后端接口
-    url: axios.defaults.baseURL + '/file/upload',
+    url: axios.defaults.baseURL + '/community/postPic',
     header: { key1: 'Content-Type', key2: 'multipart/form-data' },
     method: 'POST',
     files: this.fileList,
@@ -65,7 +65,7 @@ struct AddPostPage {
       let PhotoSelectOptions = new picker.PhotoSelectOptions();
       PhotoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE;
       // 设置上传的最大图片数量
-      PhotoSelectOptions.maxSelectNumber = 5;
+      PhotoSelectOptions.maxSelectNumber = 1;
       let photoPicker = new picker.PhotoViewPicker();
       console.log(this.cacheDir)
       photoPicker.select(PhotoSelectOptions).then((PhotoSelectResult) => {
@@ -91,8 +91,10 @@ struct AddPostPage {
             type: "jpeg"
           };
           this.fileList.push(file)
+          this.OSSImage.push("https://lab22.oss-cn-beijing.aliyuncs.com/MISE-image/"+imageName)
         }
-        if (this.selectImage.length >= 5) {
+
+        if (this.selectImage.length >= 1) {
           this.AllowAdd = false
         }
         console.log(JSON.stringify(this.fileList))
@@ -107,12 +109,14 @@ struct AddPostPage {
 
   async uploadRequest() {
     try {
+
       request.uploadFile(this.context, this.uploadConfig).then((uploadTask) => {
         uploadTask.on('complete', (taskStates) => {
           //成功之后清空上传列表
           this.selectImage = []
           this.fileList = []
           this.AllowAdd = true
+          this.OSSImage=[]
           for (let i = 0; i < taskStates.length; i++) {
             console.info(`xx upload complete taskState: ${JSON.stringify(taskStates[i])}`);
             //this.message = JSON.stringify(taskStates[i])
@@ -155,6 +159,7 @@ struct AddPostPage {
               this.selectImage.splice(index, 1)
               this.fileList.splice(index, 1)
               this.AllowAdd = true
+              this.OSSImage=[]
               promptAction.showToast({
                 message: "删除图片",
                 duration: 1000,
