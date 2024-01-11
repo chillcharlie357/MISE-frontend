@@ -7,37 +7,20 @@ import fs from '@ohos.file.fs';
 import common from '@ohos.app.ability.common';
 import request from '@ohos.request';
 import promptAction from '@ohos.promptAction'
-interface File {
-  filename:string,
-  name:string,
-  uri:string,
-  type:string,
-}
+import router from '@ohos.router'
 @Entry
 @Component
 @Preview
 struct AddPostPage{
 
-  private getUser = () =>{
-    return axios.get<UserProfileResponse>('/user/info')
-      .then((response)=>{
-        this.uid=response.data.id
-        this.avatar=response.data.avatarUrl
-          return response.data
-      })
-      .catch((err)=>{
-          console.log('get user profile err')
-          return null;
-      })
-  }
-  @State avatar:string=''
-  @State test:string='发布'
-  @State uid:number = 0
+  @State avatar: string = AppStorage.Get("userAvatar")
+  @State uid: number = parseInt(AppStorage.Get("userUId"))
+  @StorageProp('login_state') login_state: boolean = false
   @State title: string = ''
   @State content: string = ''
+  @State pictureURL: Array<string> = ['pages/Community/icon/ic_public_favor.svg']
   // 图片功能
   @State fileList:Array<string>=new Array<string>();
-
   @State selectImage:Array<string>=new Array<string>();
   // 后端返回图片地址
   //@State OSSImage:Array<string>=new Array<string>();
@@ -47,21 +30,6 @@ struct AddPostPage{
 
   context=getContext(this) as common.UIAbilityContext;
   cacheDir = this.context.cacheDir;
-  // file=[]
-  // uploadConfig = {
-  //   // 后端接口
-  //   url: 'http://172.31.27.189:7999/community/post',
-  //   header: { key1: 'Content-Type', key2: 'multipart/form-data' },
-  //   method: 'POST',
-  //   files:this.file,
-  //   // 这边可以上传表单数据
-  //   data: [
-  //      { name: 'uid', value: this.uid.toString()},
-  //      { name: 'title',value: this.title },
-  //      { name: 'content',value: this.content },
-  //       { name: 'avatar',value: this.avatar },
-  //   ]
-  // }
   async SelectImage(){
     try {
       let PhotoSelectOptions = new picker.PhotoSelectOptions();
@@ -107,20 +75,17 @@ struct AddPostPage{
       formData.append('file',this.fileList[i]);
     }
     formData.append('avatar', this.avatar);
-    formData.append('uid', this.uid.toString());
+    formData.append('uid', this.uid);
     formData.append('title', this.title);
     formData.append('content', this.content);
 
-    axios.post<string, AxiosResponse<string>, FormData>('http://172.31.27.189:7999/community/post', formData, {
+    axios.post<string, AxiosResponse<string>, FormData>('http://172.31.27.189:4523/m1/3686963-0-default/community/post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         context: this.context,
         onUploadProgress: (progressEvent: AxiosProgressEvent): void => {
           console.info(progressEvent && progressEvent.loaded && progressEvent.total ? Math.ceil(progressEvent.loaded / progressEvent.total * 100) + '%' : '0%');
         },
      }).then((res:AxiosResponse<string>)=>{
-        if(res.status==200){
-          this.test=JSON.stringify(res)
-        }
      }).catch((err: AxiosError) => {
        console.error("error:" + JSON.stringify(err));
       })
@@ -158,7 +123,6 @@ struct AddPostPage{
                 message:"删除图片",
                 duration:1000,
               })
-              // this.AllowAdd=true
             })
           }.margin(5)
         })
@@ -189,39 +153,54 @@ struct AddPostPage{
         .strokeWidth(2)
         .margin({top:10})
 
-      // TextInput({placeholder:'请输入标题'})
-      //   .height(40)
-      //   .textAlign(TextAlign.Start)
-      //   .fontSize(15)
-      //   .margin({top:10})
-      //   .width('95%')
-      //   .onChange((value)=>{
-      //     this.title=value
-      //   })
-      //
-      //
-      // Divider()
-      //   .strokeWidth(2)
-      //   .margin({top:10})
-      //
-      // TextArea({placeholder:'请输入正文'})
-      //   .height('40%')
-      //   .margin({top:10})
-      //   .width('95%')
-      //   .onChange((value)=>{
-      //     this.content=value
-      //   })
+      TextInput({placeholder:'请输入标题'})
+        .height(40)
+        .textAlign(TextAlign.Start)
+        .fontSize(15)
+        .margin({top:10})
+        .width('95%')
+        .onChange((value)=>{
+          this.title=value
+        })
+      Divider()
+        .strokeWidth(2)
+        .margin({top:10})
+
+      TextArea({placeholder:'请输入正文'})
+        .height('40%')
+        .margin({top:10})
+        .width('95%')
+        .onChange((value)=>{
+          this.content=value
+        })
       Text(JSON.stringify(this.fileList))
       Text(JSON.stringify(this.selectImage))
-      Text(this.test).fontSize(5)
       Row({space:50}){
         Button("发布")
           .width(100)
           .height(50)
-          .onClick(()=>{
-            this.uploadRequest()
-            if(this.getUser()!=null){
+          .onClick( ()=>{
+            if (this.login_state == true) {
+              if (this.title == '' || this.content == '') {
+                promptAction.showToast({
+                  message: "标题或正文不能为空",
+                  duration: 1000,
+                })
+                return
+              }
+              this.uploadRequest()
+            } else {
+              promptAction.showToast({
+                message: "请先登录",
+                duration: 1000,
+              })
             }
+            promptAction.showToast({
+              message: "发布成功",
+              duration: 1000,
+            })
+            router.back()
+
           })
         Button('取消')
           .width(100)
