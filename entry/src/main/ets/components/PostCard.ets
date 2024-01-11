@@ -10,9 +10,10 @@ struct PostCard {
       Row() {
         Image(this.content.avatar)
           .objectFit(ImageFit.Cover)
-          .width(70)
-          .height(70)
+          .width(50)
+          .height(50)
           .margin({ left: 10 })
+          .borderRadius(48)
 
         Column() {
           Text(this.content.title)
@@ -21,6 +22,7 @@ struct PostCard {
             .textOverflow({ overflow: TextOverflow.Ellipsis })
             .maxLines(1)
             .width('80%')
+            .padding({left: 30, top: 10})
         }
         .margin({ left: 10 })
 
