@@ -5,13 +5,12 @@ import { PostList } from '../../components/PostList';
 import axios from '../../axios'
 import { PostDataGetter, PostData, PostResponse } from '../../data/data';
 import { fakePostContentData } from '../../utils/fakePostContent';
-import {addIcon} from '../Community/components/addIcon'
+import { addIcon } from '../Community/components/addIcon'
 
 @Entry
 @Component
 @Preview
 struct CommunityScreen {
-  private swiperController: SwiperController = new SwiperController();
   /**
    * 给PostList组件传递的获取数据的方法, 如果直接传contents会导致PostList组件在无法渲染
    * @returns Promise<PostResponse> | null
@@ -38,6 +37,8 @@ struct CommunityScreen {
       addIcon().zIndex(9999)
 
       PostList({ getPostData: this.getPostData })
+        .zIndex(50)
+
 
     }
     .width('100%')

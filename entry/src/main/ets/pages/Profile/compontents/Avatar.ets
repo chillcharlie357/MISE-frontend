@@ -1,5 +1,6 @@
 import promptAction from '@ohos.promptAction';
 import router from '@ohos.router';
+import axios from '@ohos/axios';
 
 @Component
 struct Avatar {
@@ -8,8 +9,8 @@ struct Avatar {
   @Prop description: string
   @Prop uid: string
   @StorageLink('login_state') login_state: boolean = false
-  @StorageLink('description') des:string = this.description
-  @StorageLink('username') usr:string = this.username
+  @StorageLink('description') des: string = this.description
+  @StorageLink('username') usr: string = this.username
 
   aboutToAppear() {
     console.info("avatarUrl: " + this.avatarUrl)
@@ -42,10 +43,15 @@ struct Avatar {
             this.login_state = false
         })
 
+      axios.post('/user/logout').then((res) => {
+        console.info('logout success: ' + JSON.stringify(res));
+      }).catch((err) => {
+        console.info('logout failed: ' + JSON.stringify(err));
+      });
+
       AppStorage.SetAndProp('tokenName', '');
       AppStorage.SetAndProp('tokenValue', '');
-    }
-    catch (error) {
+    } catch (error) {
       console.error(`showDialog args error code is ${error.code}, message is ${error.message}`);
     }
     ;
@@ -90,7 +96,7 @@ struct Avatar {
             Image($r('app.media.ic_settings'))
               .height(30)
               .width(30)
-              .onClick(() =>{
+              .onClick(() => {
                 router.pushUrl({ url: 'pages/Profile/UserInfoScreen' })
               })
 
