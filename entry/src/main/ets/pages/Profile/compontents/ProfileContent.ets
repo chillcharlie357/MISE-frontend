@@ -28,15 +28,15 @@ struct ProfileContent {
         }
         .tabBar('作品')
 
-        TabContent() {
-          PostList({ getPostData: this.getPostData })
-        }
-        .tabBar('收藏')
-
-        TabContent() {
-          PostList({ getPostData: this.getPostData })
-        }
-        .tabBar('赞过')
+        // TabContent() {
+        //   PostList({ getPostData: this.getPostData })
+        // }
+        // .tabBar('收藏')
+        //
+        // TabContent() {
+        //   PostList({ getPostData: this.getPostData })
+        // }
+        // .tabBar('赞过')
       }
     }
     .backgroundColor("#ffffffff")
