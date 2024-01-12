@@ -45,19 +45,15 @@ struct AddPostPage {
   @State AllowAdd: boolean = true;
   @State  filename:string="";
   @State  name:string="";
+  @State  uri:string="";
   context = getContext(this) as common.UIAbilityContext;
   cacheDir = this.context.cacheDir;
-  uploadConfig = {
+  uploadConfig= {
     // 后端接口
     url: axios.defaults.baseURL + '/community/postPic',
     header: { key1: 'Content-Type', key2: 'multipart/form-data' },
     method: 'POST',
-    files: [{
-      filename: this.filename,
-      name: this.name,
-      uri: this.cacheDir + '/' + this.name + '.jpeg',
-      type: "jpeg"
-    }],
+    files: [],
     // 这边可以上传表单数据
     data: [
     ]
@@ -93,10 +89,19 @@ struct AddPostPage {
             uri: this.cacheDir + '/' + imageName + '.jpeg',
             type: "jpeg"
           };
+          this.uploadConfig.files.push(
+            {
+              filename: imageName,
+              name: imageName,
+              uri:"internal://cache/" + imageName + '.jpeg',
+              type: "jpeg"
+            }
+          )
           this.filename=imageName
           this.name=imageName
-          this.fileList.push(file)
-          this.OSSImage.push("https://lab22.oss-cn-beijing.aliyuncs.com/MISE-image/"+imageName)
+          this.uri="internal://cache/" + imageName + '.jpeg'
+          //this.fileList.push(file)
+          this.OSSImage.push("https://lab22.oss-cn-beijing.aliyuncs.com/MISE-image/"+imageName+".jpeg")
         }
         if (this.selectImage.length >= 1) {
           this.AllowAdd = false
@@ -125,9 +130,10 @@ struct AddPostPage {
             //this.message = JSON.stringify(taskStates[i])
           }
         });
-      }).catch((err) => {
-          console.error(JSON.stringify(err));
       })
+        .catch((err) => {
+          console.error(`xx Invoke uploadFile failed, code is ${err.code}, message is ${err.message}`);
+        })
     } catch (err) {
       console.error(`xx Invoke uploadFile failed, code is ${err.code}, message is ${err.message}`);
     }
@@ -240,7 +246,9 @@ struct AddPostPage {
       // .scrollBarColor(Color.Gray)
       // .scrollBarWidth(10)
       // .margin({top:10})
-
+      Text(JSON.stringify(this.uploadConfig.files))
+        .width(100)
+        .height(200)
 
       Row({ space: 50 }) {
         Button('发布')
@@ -255,13 +263,13 @@ struct AddPostPage {
                 })
                 return
               }
-              // if (this.OSSImage.length == 0) {
-              //   promptAction.showToast({
-              //     message: "请至少上传一张图片",
-              //     duration: 1000,
-              //   })
-              //   return
-              // }
+              if (this.OSSImage.length == 0) {
+                promptAction.showToast({
+                  message: "请至少上传一张图片",
+                  duration: 1000,
+                })
+                return
+              }
               this.uploadRequest()
               const postData: PostData = {
                 id: this.uid,
